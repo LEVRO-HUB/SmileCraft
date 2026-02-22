@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services – Smile Craft Dental Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/service.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER  (same as home page)
+  ============================================================ -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="logo">
+        <div class="logo-mark">
+          <span class="material-icons">medical_services</span>
+        </div>
+        <span class="logo-text">Smile<span>Craft</span></span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="index.html"    class="nav-link">Home</a>
+        <a href="services.html" class="nav-link active">Services</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+            Branches
+            <span class="arrow material-icons" style="font-size:.9rem!important">expand_more</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="branch-anna-nagar.html" class="dropdown-link">Anna Nagar Branch</a>
+            <a href="branch-velachery.html"  class="dropdown-link">Velachery Branch</a>
+          </div>
+        </div>
+        <a href="about.html"    class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="book.html" class="btn btn-mint header-cta">Book Now</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-inner">
+        <a href="index.html"    class="mobile-nav-link">Home</a>
+        <a href="about.html"    class="mobile-nav-link">About</a>
+        <a href="services.html" class="mobile-nav-link active">Services</a>
+        <a href="contact.html"  class="mobile-nav-link">Contact</a>
+        <div class="mobile-menu-divider">
+          <a href="book.html" class="btn btn-mint btn-block">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         HERO — "Our Services"
+    ============================================================ -->
+    <section class="svc-hero">
+      <!-- decorative blobs -->
+      <div class="blob blob--tr"></div>
+      <div class="blob blob--br"></div>
+
+      <div class="container svc-hero-inner">
+        <div class="svc-hero-content reveal">
+          <p class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span class="material-icons breadcrumb-sep">chevron_right</span>
+            Services
+          </p>
+          <h1 class="svc-hero-title">Our <em>Services</em></h1>
+          <p class="svc-hero-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit velit,
+            sapien habitant integer senectus malesuada ac.
+          </p>
+        </div>
+        <div class="svc-hero-cta reveal reveal-d1">
+          <a href="book.html" class="btn btn-mint btn-lg">Book an Appointment</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICE CARDS  3 × 2 grid
+    ============================================================ -->
+    <section class="cards-section">
+      <div class="container">
+        <div class="cards-grid">
+
+          <!-- Card 1 -->
+          <div class="svc-card reveal">
+            <div class="svc-card-icon-wrap">
+              <!-- Inline SVG: tooth with sparkles (Cosmetic) -->
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="40" cy="40" r="38" stroke="var(--mint)" stroke-width="1.5" stroke-dasharray="4 4" opacity=".35"/>
+                <!-- tooth body -->
+                <path d="M27 22c-3 0-8 3-8 10 0 5 2 8 3 12s1 10 4 10c2 0 3-3 4-6s2-5 4-5 3 2 4 5 2 6 4 6c3 0 3-6 4-10s3-7 3-12c0-7-5-10-8-10-2 0-4 2-5 3-1-1-3-3-5-3z"
+                      fill="none" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- sparkle top-right -->
+                <path d="M57 16l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="var(--mint)" opacity=".7"/>
+                <!-- sparkle left -->
+                <path d="M18 34l.8 2.4 2.4.8-2.4.8-.8 2.4-.8-2.4-2.4-.8 2.4-.8z" fill="var(--mint)" opacity=".5"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Cosmetic Dentistry</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services\service-cosmetic.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="svc-card reveal reveal-d1">
+            <div class="svc-card-icon-wrap">
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- brace bar top -->
+                <rect x="20" y="29" width="40" height="5" rx="2.5" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- brace bar bottom -->
+                <rect x="20" y="46" width="40" height="5" rx="2.5" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- bracket squares -->
+                <rect x="27" y="25" width="8" height="13" rx="1.5" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <rect x="36" y="25" width="8" height="13" rx="1.5" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <rect x="45" y="25" width="8" height="13" rx="1.5" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- diamond accent -->
+                <path d="M40 14l3 4h-6z" fill="var(--mint)" opacity=".7"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Orthodontics</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services/service-orthodontics.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="svc-card reveal reveal-d2">
+            <div class="svc-card-icon-wrap">
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- tooth -->
+                <path d="M29 22c-3 0-8 3-8 10 0 5 2 8 3 12s1 10 4 10c2 0 3-3 4-6s2-5 4-5 3 2 4 5 2 6 4 6c3 0 3-6 4-10s3-7 3-12c0-7-5-10-8-10-2 0-4 2-5 3-1-1-3-3-5-3z"
+                      fill="none" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- flag pole -->
+                <line x1="55" y1="18" x2="55" y2="36" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round"/>
+                <!-- flag -->
+                <path d="M55 18l8 4-8 4z" fill="var(--mint)" opacity=".85"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Oral Hygiene</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services/service-oral-hygiene.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="svc-card reveal">
+            <div class="svc-card-icon-wrap">
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- large tooth -->
+                <path d="M24 24c-4 0-10 4-10 13 0 6 3 10 4 15s1 12 5 12c3 0 4-4 5-8s3-7 6-7 5 3 6 7 2 8 5 8c4 0 4-7 5-12s4-9 4-15c0-9-6-13-10-13-3 0-5 2-6 4-1-2-4-4-6-4z"
+                      fill="none" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- small heart/plus on top -->
+                <path d="M40 13c0-2 3-4 5-2s1 5-5 8c-6-3-7-6-5-8s5 0 5 2z" fill="var(--mint)" opacity=".7"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Dental Treatment</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services/service-dental-treatment.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="svc-card reveal reveal-d1">
+            <div class="svc-card-icon-wrap">
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- dental chair outline -->
+                <path d="M18 50h32c2 0 3-1 3-3V34c0-2-1-3-3-3H18" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round"/>
+                <!-- seat back -->
+                <path d="M50 31V22c0-2 2-3 4-3h4" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round"/>
+                <!-- headrest -->
+                <rect x="54" y="16" width="8" height="6" rx="2" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- drill arm -->
+                <path d="M42 25l8-6" stroke="var(--mint)" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="50" cy="19" r="3" fill="none" stroke="var(--mint)" stroke-width="2"/>
+                <!-- legs -->
+                <path d="M24 50v10M42 50v10" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M18 60h10M36 60h10" stroke="var(--mint-dark)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Dental Surgery</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services/service-dental-surgery.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="svc-card reveal reveal-d2">
+            <div class="svc-card-icon-wrap">
+              <svg class="svc-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- implant post -->
+                <rect x="36" y="40" width="8" height="22" rx="2" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- threads on post -->
+                <path d="M36 45h8M36 50h8M36 55h8" stroke="var(--mint-dark)" stroke-width="1.5" opacity=".5"/>
+                <!-- crown -->
+                <path d="M28 40c0-7 5-14 12-14s12 7 12 14H28z" fill="none" stroke="var(--mint-dark)" stroke-width="2" stroke-linejoin="round"/>
+                <!-- abutment -->
+                <rect x="33" y="37" width="14" height="5" rx="1" fill="none" stroke="var(--mint-dark)" stroke-width="2"/>
+                <!-- gum line -->
+                <path d="M24 60c0-4 7-8 16-8s16 4 16 8" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+              </svg>
+            </div>
+            <div class="svc-card-body">
+              <h3 class="svc-card-title">Dental Implants</h3>
+              <p class="svc-card-desc">Lorem ipsum dolor sit amet, diument consectetur adipiscing elit.</p>
+              <a href="services/service-dental-implants.html" class="svc-card-link">
+                Learn More
+                <span class="material-icons svc-card-link-arrow">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+        </div><!-- /cards-grid -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICE DETAIL SECTIONS (expandable)
+    ============================================================ -->
+    <section class="detail-section" id="cosmetic">
+      <div class="container detail-inner">
+        <div class="detail-img reveal">
+          <img
+            src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=700&q=80"
+            alt="Cosmetic Dentistry"
+          />
+          <div class="detail-img-badge">
+            <span class="material-icons">auto_fix_high</span>
+            <span>Smile Makeovers</span>
+          </div>
+        </div>
+        <div class="detail-content reveal reveal-d1">
+          <div class="section-tag">Cosmetic Dentistry</div>
+          <h2 class="section-title">A Smile You'll<br />Be Proud To Show</h2>
+          <p class="section-desc">We use the latest whitening systems, porcelain veneers, and composite bonding to transform your smile. Our cosmetic procedures are minimally invasive and deliver natural-looking results.</p>
+          <ul class="detail-list">
+            <li><span class="material-icons">check_circle</span>Teeth whitening &amp; bleaching</li>
+            <li><span class="material-icons">check_circle</span>Porcelain veneers</li>
+            <li><span class="material-icons">check_circle</span>Composite bonding</li>
+            <li><span class="material-icons">check_circle</span>Smile makeover consultations</li>
+          </ul>
+          <a href="book.html" class="btn btn-mint">Book a Consultation</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROCESS STEPS
+    ============================================================ -->
+    <section class="process-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag reveal">How It Works</div>
+          <h2 class="section-title reveal reveal-d1">Your Path to a Perfect Smile</h2>
+          <p class="section-desc reveal reveal-d2">From your first visit to your final check-up — every step is designed to make you feel comfortable, informed, and cared for.</p>
+        </div>
+        <div class="process-steps">
+          <div class="process-step reveal">
+            <div class="step-num">01</div>
+            <div class="step-icon-wrap">
+              <span class="material-icons">calendar_today</span>
+            </div>
+            <h4 class="step-title">Book Appointment</h4>
+            <p class="step-desc">Choose your preferred date and service. Online booking available 24/7.</p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="process-step reveal reveal-d1">
+            <div class="step-num">02</div>
+            <div class="step-icon-wrap">
+              <span class="material-icons">medical_information</span>
+            </div>
+            <h4 class="step-title">Consultation</h4>
+            <p class="step-desc">Meet your specialist, discuss your goals, and receive a personalised plan.</p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="process-step reveal reveal-d2">
+            <div class="step-num">03</div>
+            <div class="step-icon-wrap">
+              <span class="material-icons">healing</span>
+            </div>
+            <h4 class="step-title">Treatment</h4>
+            <p class="step-desc">Receive expert, pain-free care using the latest dental technology.</p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="process-step reveal reveal-d3">
+            <div class="step-num">04</div>
+            <div class="step-icon-wrap">
+              <span class="material-icons">sentiment_very_satisfied</span>
+            </div>
+            <h4 class="step-title">Enjoy Your Smile</h4>
+            <p class="step-desc">Walk away with confidence. Our aftercare team is always here for you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRICING TABLE
+    ============================================================ -->
+    <section class="pricing-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag reveal">Pricing</div>
+          <h2 class="section-title reveal reveal-d1">Transparent, Honest Pricing</h2>
+          <p class="section-desc reveal reveal-d2">No hidden fees. We believe great dental care should be accessible. All plans include a free initial consultation.</p>
+        </div>
+        <div class="pricing-grid">
+
+          <div class="pricing-card reveal">
+            <div class="pricing-card-header">
+              <div class="pricing-icon-wrap">
+                <span class="material-icons">favorite_border</span>
+              </div>
+              <h3 class="pricing-plan">Basic Care</h3>
+            </div>
+            <div class="pricing-amount">
+              <span class="pricing-currency">$</span>
+              <span class="pricing-num">49</span>
+              <span class="pricing-period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="material-icons">check</span>2 check-ups per year</li>
+              <li><span class="material-icons">check</span>X-rays included</li>
+              <li><span class="material-icons">check</span>Basic cleaning</li>
+              <li class="faded"><span class="material-icons">close</span>Cosmetic treatments</li>
+              <li class="faded"><span class="material-icons">close</span>Priority booking</li>
+            </ul>
+            <a href="book.html" class="btn btn-outline btn-block">Get Started</a>
+          </div>
+
+          <div class="pricing-card pricing-card--featured reveal reveal-d1">
+            <div class="pricing-badge">Most Popular</div>
+            <div class="pricing-card-header">
+              <div class="pricing-icon-wrap pricing-icon-wrap--white">
+                <span class="material-icons">star_border</span>
+              </div>
+              <h3 class="pricing-plan">Complete Care</h3>
+            </div>
+            <div class="pricing-amount">
+              <span class="pricing-currency">$</span>
+              <span class="pricing-num">99</span>
+              <span class="pricing-period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="material-icons">check</span>4 check-ups per year</li>
+              <li><span class="material-icons">check</span>X-rays &amp; scans</li>
+              <li><span class="material-icons">check</span>Deep cleaning</li>
+              <li><span class="material-icons">check</span>1 whitening session</li>
+              <li class="faded"><span class="material-icons">close</span>Priority booking</li>
+            </ul>
+            <a href="book.html" class="btn btn-white btn-block">Get Started</a>
+          </div>
+
+          <div class="pricing-card reveal reveal-d2">
+            <div class="pricing-card-header">
+              <div class="pricing-icon-wrap">
+                <span class="material-icons">workspace_premium</span>
+              </div>
+              <h3 class="pricing-plan">Premium</h3>
+            </div>
+            <div class="pricing-amount">
+              <span class="pricing-currency">$</span>
+              <span class="pricing-num">179</span>
+              <span class="pricing-period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="material-icons">check</span>Unlimited check-ups</li>
+              <li><span class="material-icons">check</span>All scans included</li>
+              <li><span class="material-icons">check</span>Full cosmetic access</li>
+              <li><span class="material-icons">check</span>Unlimited whitening</li>
+              <li><span class="material-icons">check</span>Priority booking</li>
+            </ul>
+            <a href="book.html" class="btn btn-outline btn-block">Get Started</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FAQ
+    ============================================================ -->
+    <section class="faq-section">
+      <div class="container faq-inner">
+        <div class="faq-left reveal">
+          <div class="section-tag">FAQ</div>
+          <h2 class="section-title">Frequently Asked<br />Questions</h2>
+          <p class="section-desc">Can't find your answer here? Our friendly team is just a call or message away.</p>
+          <a href="contact.html" class="btn btn-mint">Contact Us</a>
+        </div>
+        <div class="faq-right reveal reveal-d1">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Does tooth whitening hurt?
+              <span class="material-icons faq-icon">add</span>
+            </button>
+            <div class="faq-answer">
+              <p>Our professional whitening systems are designed to minimise sensitivity. Most patients experience little to no discomfort during the procedure.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              How long do dental implants last?
+              <span class="material-icons faq-icon">add</span>
+            </button>
+            <div class="faq-answer">
+              <p>With proper care and regular check-ups, dental implants can last a lifetime. The crown component typically lasts 10–15 years before needing replacement.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Are your treatments suitable for children?
+              <span class="material-icons faq-icon">add</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! Our pediatric dentistry team specialises in making children feel safe and comfortable. We recommend first visits from age 2–3 onwards.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Do you offer payment plans?
+              <span class="material-icons faq-icon">add</span>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely. We offer flexible financing options including 0% interest payment plans for qualifying treatments. Ask our reception team for details.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              How soon can I get an emergency appointment?
+              <span class="material-icons faq-icon">add</span>
+            </button>
+            <div class="faq-answer">
+              <p>We reserve same-day slots for dental emergencies. Call our emergency line and we will do our best to see you within hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CTA BANNER — "Schedule a virtual or presential appointment"
+    ============================================================ -->
+    <section class="cta-banner">
+      <div class="container cta-inner">
+        <div class="cta-content reveal">
+          <h2 class="cta-title">Schedule a virtual or<br />presential appointment<br /><em>today</em></h2>
+          <a href="book.html" class="btn btn-white btn-lg">Book an Appointment</a>
+        </div>
+        <div class="cta-img-wrap reveal reveal-d1">
+          <img
+            src="https://images.unsplash.com/photo-1588776814546-1ffedbe36cf5?w=700&q=80"
+            alt="Patient smiling at dentist"
+          />
+          <div class="cta-img-decal"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="container">
+
+      <!-- Newsletter row -->
+      <div class="footer-newsletter reveal">
+        <div class="footer-newsletter-text">
+          <h3 class="footer-newsletter-title">Subscribe to our Newsletter</h3>
+          <p class="footer-newsletter-sub">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p>
+        </div>
+        <form class="footer-newsletter-form" id="nlForm">
+          <input type="email" class="nl-input" placeholder="Enter your email" required aria-label="Email address" />
+          <button type="submit" class="btn btn-mint nl-btn">Subscribe</button>
+        </form>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <!-- Footer columns -->
+      <div class="footer-cols">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo-wrap">
+            <div class="footer-logo-mark">
+              <span class="material-icons">medical_services</span>
+            </div>
+            <span class="footer-logo-text">Smile<span>Care</span></span>
+          </div>
+          <div class="footer-socials">
+            <a href="#" class="footer-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
+            <a href="#" class="footer-social" aria-label="Twitter"><span class="material-icons">flutter_dash</span></a>
+            <a href="#" class="footer-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
+            <a href="#" class="footer-social" aria-label="LinkedIn"><span class="material-icons">work</span></a>
+            <a href="#" class="footer-social" aria-label="YouTube"><span class="material-icons">play_circle</span></a>
+            <a href="#" class="footer-social" aria-label="WhatsApp"><span class="material-icons">chat</span></a>
+          </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Menu</h4>
+          <div class="footer-links-row">
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="#">Services Single</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Blog Post</a></li>
+            </ul>
+            <ul class="footer-links">
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#">Plans</a></li>
+              <li><a href="#">Plans Single</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Utility Pages -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Utility Pages</h4>
+          <ul class="footer-links">
+            <li><a href="#">Styleguide</a></li>
+            <li><a href="#">Password Protected</a></li>
+            <li><a href="#">404 Not Found</a></li>
+            <li><a href="#">Start Here</a></li>
+            <li><a href="#">Licenses</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Contact</h4>
+          <div class="footer-contact-item">
+            <span class="material-icons">alternate_email</span>
+            <a href="mailto:contact@dentist.com">contact@dentist.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="material-icons">phone</span>
+            <span>(487) 120 – 7980</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="material-icons">location_on</span>
+            <span>24 Broadcast Drive Charlotte<br />NC 28202, USA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <div class="footer-logo-bottom">
+          <div class="footer-logo-mark footer-logo-mark--sm">
+            <span class="material-icons">medical_services</span>
+          </div>
+          <span class="footer-logo-text footer-logo-text--sm">Smile<span>Craft</span></span>
+        </div>
+        <p class="footer-copy">
+          Copyright &copy; SmileCraft — Designed by
+          <a href="#">Brix Templates</a> – Powered by
+          <a href="#">Webflow</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- FLOATING MOBILE NAV -->
+  <nav class="mfn" id="mobileFloatNav" aria-label="Mobile navigation">
+    <div class="mfn-track">
+      <a href="index.html"    class="mfn-item"><span class="material-icons mfn-icon">home</span><span class="mfn-label">Home</span></a>
+      <a href="services.html" class="mfn-item mfn-item--active"><span class="material-icons mfn-icon">medical_services</span><span class="mfn-label">Services</span></a>
+      <a href="book.html"     class="mfn-item"><span class="material-icons mfn-icon">calendar_today</span><span class="mfn-label">Book</span></a>
+      <a href="contact.html"  class="mfn-item"><span class="material-icons mfn-icon">more_horiz</span><span class="mfn-label">More</span></a>
+    </div>
+  </nav>
+
+  <script src="assets/js/service.js"></script>
+</body>
+</html>
