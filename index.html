@@ -9,8 +9,116 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/premium-mobile-nav.css" />
 </head>
 <body>
+
+  <!-- ============================================================
+       PREMIUM MOBILE NAV — Backdrop + Drawer
+       Copy this block (and the hamburger button below) into every page
+  ============================================================ -->
+
+  <!-- Backdrop -->
+  <div class="pmn-backdrop" id="pmnBackdrop" aria-hidden="true"></div>
+
+  <!-- Drawer -->
+  <aside class="pmn-drawer" id="pmnDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+    <!-- Drawer header -->
+    <div class="pmn-header">
+      <a href="index.html" class="pmn-logo">
+        <div class="pmn-logo-mark">
+          <span class="material-icons">medical_services</span>
+        </div>
+        <span class="pmn-logo-text">Smile<span>Craft</span></span>
+      </a>
+      <button class="pmn-close" id="pmnClose" aria-label="Close menu">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="pmn-body">
+
+      <!-- Main navigation -->
+      <nav aria-label="Mobile navigation">
+        <div class="pmn-section-label">Navigation</div>
+        <div class="pmn-nav">
+          <a href="index.html"    class="pmn-nav-link active">
+            Home
+            <span class="pmn-nav-arrow"><span class="material-icons">arrow_forward_ios</span></span>
+          </a>
+          <a href="services.html" class="pmn-nav-link">
+            Services
+            <span class="pmn-nav-arrow"><span class="material-icons">arrow_forward_ios</span></span>
+          </a>
+          <a href="about.html"    class="pmn-nav-link">
+            About Us
+            <span class="pmn-nav-arrow"><span class="material-icons">arrow_forward_ios</span></span>
+          </a>
+          <a href="contact.html"  class="pmn-nav-link">
+            Contact
+            <span class="pmn-nav-arrow"><span class="material-icons">arrow_forward_ios</span></span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Branches -->
+      <div>
+        <div class="pmn-section-label">Our Branches</div>
+        <div class="pmn-branches">
+          <a href="branches/b1/branch-anna-nagar.html" class="pmn-branch-card">
+            <div class="pmn-branch-icon">
+              <span class="material-icons">location_city</span>
+            </div>
+            <div class="pmn-branch-info">
+              <div class="pmn-branch-name">Anna Nagar Branch</div>
+              <div class="pmn-branch-addr">South Austin Merry Road 38, Chennai</div>
+            </div>
+            <span class="pmn-branch-chevron"><span class="material-icons">chevron_right</span></span>
+          </a>
+          <a href="branches/b2/branch-velachery.html" class="pmn-branch-card">
+            <div class="pmn-branch-icon">
+              <span class="material-icons">location_city</span>
+            </div>
+            <div class="pmn-branch-info">
+              <div class="pmn-branch-name">Velachery Branch</div>
+              <div class="pmn-branch-addr">Road 3 Banking Place Millennium, Chennai</div>
+            </div>
+            <span class="pmn-branch-chevron"><span class="material-icons">chevron_right</span></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <a href="book.html" class="pmn-cta">
+        <span class="material-icons">calendar_today</span>
+        Book an Appointment
+      </a>
+
+    </div><!-- /pmn-body -->
+
+    <!-- Drawer footer -->
+    <div class="pmn-footer">
+      <div class="pmn-footer-contact">
+        <span class="material-icons">phone</span>
+        <span>+60 456 789 101</span>
+      </div>
+      <div class="pmn-footer-contact">
+        <span class="material-icons">alternate_email</span>
+        <span>hello@smilecraft.com</span>
+      </div>
+      <div class="pmn-socials">
+        <a href="#" class="pmn-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
+        <a href="#" class="pmn-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
+        <a href="#" class="pmn-social" aria-label="WhatsApp"><span class="material-icons">chat</span></a>
+        <a href="#" class="pmn-social" aria-label="YouTube"><span class="material-icons">play_circle</span></a>
+      </div>
+    </div>
+
+  </aside>
+  <!-- /PREMIUM MOBILE NAV -->
+
 
   <!-- HEADER -->
   <header class="site-header" id="site-header">
@@ -21,6 +129,8 @@
         </div>
         <span class="logo-text">Smile<span>Craft</span></span>
       </a>
+
+      <!-- Desktop nav (unchanged) -->
       <nav class="desktop-nav" aria-label="Main navigation">
         <a href="index.html"    class="nav-link active">Home</a>
         <a href="services.html" class="nav-link">Services</a>
@@ -30,38 +140,31 @@
             <span class="arrow material-icons" style="font-size:.9rem!important">expand_more</span>
           </button>
           <div class="dropdown-menu">
-            <a href="branch-anna-nagar.html" class="dropdown-link">Anna Nagar Branch</a>
-            <a href="branch-velachery.html"  class="dropdown-link">Velachery Branch</a>
+            <a href="branches/b1/branch-anna-nagar.html" class="dropdown-link">Anna Nagar Branch</a>
+            <a href="branches/b2/branch-velachery.html"  class="dropdown-link">Velachery Branch</a>
           </div>
         </div>
-        <a href="about.html" class="nav-link">About</a>
+        <a href="about.html"  class="nav-link">About</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
+
       <div class="header-actions">
         <a href="book.html" class="btn btn-mint header-cta" style="padding:.6rem 1.4rem;font-size:.875rem">
           Join Us
           <span class="material-icons" style="font-size:.9rem!important">arrow_forward</span>
         </a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
-          <span class="material-icons">menu</span>
+
+        <!-- PREMIUM HAMBURGER (replaces old mobile-menu-btn) -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="pmnDrawer">
+          <span class="hamburger-bar hamburger-bar--top"></span>
+          <span class="hamburger-bar hamburger-bar--mid"></span>
+          <span class="hamburger-bar hamburger-bar--bot"></span>
         </button>
       </div>
     </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <div class="mobile-menu-inner">
-        <a href="index.html"             class="mobile-nav-link active">Home</a>
-        <a href="services.html"          class="mobile-nav-link">Services</a>
-        <p class="mobile-branch-title">Branches</p>
-        <a href="branch-anna-nagar.html" class="mobile-nav-link">Anna Nagar Branch</a>
-        <a href="branch-velachery.html"  class="mobile-nav-link">Velachery Branch</a>
-        <a href="about.html"             class="mobile-nav-link">About</a>
-        <a href="contact.html"           class="mobile-nav-link">Contact</a>
-        <div class="mobile-menu-divider">
-          <a href="book.html" class="btn btn-mint btn-block">Book Appointment</a>
-        </div>
-      </div>
-    </div>
+    <!-- Old mobile-menu dropdown removed — drawer replaces it -->
   </header>
+
 
   <main>
 
@@ -140,22 +243,10 @@
     <!-- STATS -->
     <div class="stats-strip">
       <div class="container stats-inner">
-        <div class="stat-item reveal">
-          <div class="stat-num" data-target="10" data-suffix="M">10M</div>
-          <div class="stat-label">Happy Customers</div>
-        </div>
-        <div class="stat-item reveal reveal-d1">
-          <div class="stat-num" data-target="4" data-suffix="M">4M</div>
-          <div class="stat-label">Monthly Visitors</div>
-        </div>
-        <div class="stat-item reveal reveal-d2">
-          <div class="stat-num" data-target="120" data-suffix="">120</div>
-          <div class="stat-label">Countries Worldwide</div>
-        </div>
-        <div class="stat-item reveal reveal-d3">
-          <div class="stat-num" data-target="4.9" data-suffix="">4.9</div>
-          <div class="stat-label">Trust Pilot</div>
-        </div>
+        <div class="stat-item reveal"><div class="stat-num" data-target="10" data-suffix="M">10M</div><div class="stat-label">Happy Customers</div></div>
+        <div class="stat-item reveal reveal-d1"><div class="stat-num" data-target="4" data-suffix="M">4M</div><div class="stat-label">Monthly Visitors</div></div>
+        <div class="stat-item reveal reveal-d2"><div class="stat-num" data-target="120" data-suffix="">120</div><div class="stat-label">Countries Worldwide</div></div>
+        <div class="stat-item reveal reveal-d3"><div class="stat-num" data-target="4.9" data-suffix="">4.9</div><div class="stat-label">Trust Pilot</div></div>
       </div>
     </div>
 
@@ -306,60 +397,20 @@
         </div>
         <div class="team-grid">
           <div class="team-card reveal">
-            <div class="team-card-img-wrap">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDopGzD_O6EvM_ueT5cdy2WdhYHfuxGgEpzsz2pqbEPUT_FdFPAybofQylsP7S9BwBVqnEFPapk2NXwwmVRXKi9854Az4Q7Llj92l1o6axu_2lmc5dwBPAyADTKX_5I0qH-8kamyp6nU_CMetSuH719pKzJ1KcJb5VcEzhryKbSdtzR2yOZCdP5hM8IDlKPr3jBN_R4HvHt4aohF0bNutRPpgo_bq8YlE6jBd43CevbvLGlRt51jZjZ8lo1gzrG7-9OXD5G8T_fmwKM" alt="Sonia Alam" />
-            </div>
-            <div class="team-card-body">
-              <div class="team-card-name">Sonia Alam</div>
-              <div class="team-card-role">Orthodontist</div>
-              <div class="team-card-socials">
-                <a href="#" class="team-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
-                <a href="#" class="team-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
-                <a href="#" class="team-social" aria-label="Twitter"><span class="material-icons">alternate_email</span></a>
-              </div>
-            </div>
+            <div class="team-card-img-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDopGzD_O6EvM_ueT5cdy2WdhYHfuxGgEpzsz2pqbEPUT_FdFPAybofQylsP7S9BwBVqnEFPapk2NXwwmVRXKi9854Az4Q7Llj92l1o6axu_2lmc5dwBPAyADTKX_5I0qH-8kamyp6nU_CMetSuH719pKzJ1KcJb5VcEzhryKbSdtzR2yOZCdP5hM8IDlKPr3jBN_R4HvHt4aohF0bNutRPpgo_bq8YlE6jBd43CevbvLGlRt51jZjZ8lo1gzrG7-9OXD5G8T_fmwKM" alt="Sonia Alam" /></div>
+            <div class="team-card-body"><div class="team-card-name">Sonia Alam</div><div class="team-card-role">Orthodontist</div><div class="team-card-socials"><a href="#" class="team-social"><span class="material-icons">facebook</span></a><a href="#" class="team-social"><span class="material-icons">camera_alt</span></a><a href="#" class="team-social"><span class="material-icons">alternate_email</span></a></div></div>
           </div>
           <div class="team-card reveal reveal-d1">
-            <div class="team-card-img-wrap">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcIdsbpoBAEmDCyvGTYiAcoZQMdEL8_o4jUb1fI3t1mltSZgcDNOk8Eg0CQA3Hm9Q_-OEI6f23nrH9WmXuvTSxL3uRX5S_xXYe-Y3epvtocwbALvSAl6w2EVdcaelMLERBbDQ6WkqJsfhL_vnSTOXrQ8nAODGp5gWMEvr-o4YgyyY_NMbwGxx5VLQg_odnl6fgfZirpGBUBrzQw6ohsAO6HxZBKdu3V4aXttXnmuVRhGe_ING7Mu4OqbAkcuz4Gr3D4mhB47mNFatV" alt="Iqbal John" />
-            </div>
-            <div class="team-card-body">
-              <div class="team-card-name">Iqbal John</div>
-              <div class="team-card-role">Implant Surgeon</div>
-              <div class="team-card-socials">
-                <a href="#" class="team-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
-                <a href="#" class="team-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
-                <a href="#" class="team-social" aria-label="Twitter"><span class="material-icons">alternate_email</span></a>
-              </div>
-            </div>
+            <div class="team-card-img-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcIdsbpoBAEmDCyvGTYiAcoZQMdEL8_o4jUb1fI3t1mltSZgcDNOk8Eg0CQA3Hm9Q_-OEI6f23nrH9WmXuvTSxL3uRX5S_xXYe-Y3epvtocwbALvSAl6w2EVdcaelMLERBbDQ6WkqJsfhL_vnSTOXrQ8nAODGp5gWMEvr-o4YgyyY_NMbwGxx5VLQg_odnl6fgfZirpGBUBrzQw6ohsAO6HxZBKdu3V4aXttXnmuVRhGe_ING7Mu4OqbAkcuz4Gr3D4mhB47mNFatV" alt="Iqbal John" /></div>
+            <div class="team-card-body"><div class="team-card-name">Iqbal John</div><div class="team-card-role">Implant Surgeon</div><div class="team-card-socials"><a href="#" class="team-social"><span class="material-icons">facebook</span></a><a href="#" class="team-social"><span class="material-icons">camera_alt</span></a><a href="#" class="team-social"><span class="material-icons">alternate_email</span></a></div></div>
           </div>
           <div class="team-card reveal reveal-d2">
-            <div class="team-card-img-wrap">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChmbX5bsBuD-jSvUTuSP11_M1lwWSOUhIW6lZ1zyoItFHYKPsLZQcVVMtUZyrbXzsvfrpUlv3C1v6ByvkI3ykHH_GqDPXKFIo7x_gDSEijIf-A60rYhrU-hfmVrScR9v3p1KXx04SG2jOWv69NooHk7VWQtc6Lkcy0zgG5nCHZhvZgwsXSitbn9k7v-KpR0ioeQIm6AeziceTIG2kWN310fQNU3BNhMAxBEhSE8-13J1EOT6I7S0nsmGiqEP9UwglgiCBYVnkCSqWQ" alt="David William" />
-            </div>
-            <div class="team-card-body">
-              <div class="team-card-name">David William</div>
-              <div class="team-card-role">Executive Specialist</div>
-              <div class="team-card-socials">
-                <a href="#" class="team-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
-                <a href="#" class="team-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
-                <a href="#" class="team-social" aria-label="Twitter"><span class="material-icons">alternate_email</span></a>
-              </div>
-            </div>
+            <div class="team-card-img-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChmbX5bsBuD-jSvUTuSP11_M1lwWSOUhIW6lZ1zyoItFHYKPsLZQcVVMtUZyrbXzsvfrpUlv3C1v6ByvkI3ykHH_GqDPXKFIo7x_gDSEijIf-A60rYhrU-hfmVrScR9v3p1KXx04SG2jOWv69NooHk7VWQtc6Lkcy0zgG5nCHZhvZgwsXSitbn9k7v-KpR0ioeQIm6AeziceTIG2kWN310fQNU3BNhMAxBEhSE8-13J1EOT6I7S0nsmGiqEP9UwglgiCBYVnkCSqWQ" alt="David William" /></div>
+            <div class="team-card-body"><div class="team-card-name">David William</div><div class="team-card-role">Executive Specialist</div><div class="team-card-socials"><a href="#" class="team-social"><span class="material-icons">facebook</span></a><a href="#" class="team-social"><span class="material-icons">camera_alt</span></a><a href="#" class="team-social"><span class="material-icons">alternate_email</span></a></div></div>
           </div>
           <div class="team-card reveal reveal-d3">
-            <div class="team-card-img-wrap">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOfhDMflfCUIPQ0WJO01Ql3Wp8brlt-lU6WjFXaf2J_yGFJLPkDk2qjBVz8OmNxVrRzCZy6fDyOLZ4_OGwgSvwiSW08GeDEIKagR-wZbN5PGY29-U5nr48mp02Q2K-Wn-SGdj53v8PpCOAQ6gAijjRNw1lT_-XlJsCT_eVBcufyX-arwmvFzP4YLt8fNwIthJJqX7RLjk5Mm9cVQ1e6KtZfuZHfRw-x9Ecp09bIm4DrrAISkBICS6Y2plAuKTc18bawViIzUu15Ar5" alt="Luca Williams" />
-            </div>
-            <div class="team-card-body">
-              <div class="team-card-name">Luca Williams</div>
-              <div class="team-card-role">Care Specialist</div>
-              <div class="team-card-socials">
-                <a href="#" class="team-social" aria-label="Facebook"><span class="material-icons">facebook</span></a>
-                <a href="#" class="team-social" aria-label="Instagram"><span class="material-icons">camera_alt</span></a>
-                <a href="#" class="team-social" aria-label="Twitter"><span class="material-icons">alternate_email</span></a>
-              </div>
-            </div>
+            <div class="team-card-img-wrap"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOfhDMflfCUIPQ0WJO01Ql3Wp8brlt-lU6WjFXaf2J_yGFJLPkDk2qjBVz8OmNxVrRzCZy6fDyOLZ4_OGwgSvwiSW08GeDEIKagR-wZbN5PGY29-U5nr48mp02Q2K-Wn-SGdj53v8PpCOAQ6gAijjRNw1lT_-XlJsCT_eVBcufyX-arwmvFzP4YLt8fNwIthJJqX7RLjk5Mm9cVQ1e6KtZfuZHfRw-x9Ecp09bIm4DrrAISkBICS6Y2plAuKTc18bawViIzUu15Ar5" alt="Luca Williams" /></div>
+            <div class="team-card-body"><div class="team-card-name">Luca Williams</div><div class="team-card-role">Care Specialist</div><div class="team-card-socials"><a href="#" class="team-social"><span class="material-icons">facebook</span></a><a href="#" class="team-social"><span class="material-icons">camera_alt</span></a><a href="#" class="team-social"><span class="material-icons">alternate_email</span></a></div></div>
           </div>
         </div>
       </div>
@@ -375,32 +426,14 @@
         </div>
         <div class="testi-grid">
           <div class="testi-card reveal">
-            <div class="testi-header">
-              <div class="testi-avatar">SW</div>
-              <div>
-                <div class="testi-name">Sohail Williams</div>
-                <div class="testi-role">Orthopedist of Surgeon</div>
-              </div>
-            </div>
-            <div class="testi-stars">
-              <span class="material-icons">star</span><span class="material-icons">star</span>
-              <span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span>
-            </div>
+            <div class="testi-header"><div class="testi-avatar">SW</div><div><div class="testi-name">Sohail Williams</div><div class="testi-role">Orthopedist of Surgeon</div></div></div>
+            <div class="testi-stars"><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span></div>
             <p class="testi-text">"Life-changing insights! This health website empowered me to make informed choices for a healthier lifestyle. Highly recommend to anyone looking for expert dental care."</p>
             <div class="testi-date"><span class="material-icons">location_on</span>North America, 2023.49.20</div>
           </div>
           <div class="testi-card reveal reveal-d1">
-            <div class="testi-header">
-              <div class="testi-avatar testi-avatar--dark">AK</div>
-              <div>
-                <div class="testi-name">Anees Khan</div>
-                <div class="testi-role">Executive Manager</div>
-              </div>
-            </div>
-            <div class="testi-stars">
-              <span class="material-icons">star</span><span class="material-icons">star</span>
-              <span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span>
-            </div>
+            <div class="testi-header"><div class="testi-avatar testi-avatar--dark">AK</div><div><div class="testi-name">Anees Khan</div><div class="testi-role">Executive Manager</div></div></div>
+            <div class="testi-stars"><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span></div>
             <p class="testi-text">"Grateful for this resource! The practical tips on the health website have been a game-changer for my well-being. The team is truly dedicated to patient care."</p>
             <div class="testi-date"><span class="material-icons">location_on</span>Central Asia, 2023.93.0</div>
           </div>
@@ -433,20 +466,17 @@
                 <div class="clinic-item-addr"><span class="material-icons">place</span>Central Area, 1 Aldershot Banking Ave, San Francisco, CA 94103</div>
               </div>
               <div class="clinic-item">
-                <div class="clinic-item-name">456 Wellness Avenue, Pulse Heights</div>
-                <div class="clinic-item-addr"><span class="material-icons">place</span>South Austin Merry Road 38, Anna Nagar Branch, Chennai</div>
+                <div class="clinic-item-name">Anna Nagar Branch</div>
+                <div class="clinic-item-addr"><span class="material-icons">place</span>South Austin Merry Road 38, Anna Nagar, Chennai</div>
               </div>
               <div class="clinic-item">
-                <div class="clinic-item-name">789 Care Lane, Life Square</div>
-                <div class="clinic-item-addr"><span class="material-icons">place</span>Road 3 Banking Place Millennium, Velachery Branch, Chennai</div>
+                <div class="clinic-item-name">Velachery Branch</div>
+                <div class="clinic-item-addr"><span class="material-icons">place</span>Road 3 Banking Place Millennium, Velachery, Chennai</div>
               </div>
             </div>
           </div>
           <div class="locator-map">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.565983756306!2d-122.41846172346761!3d37.77669141253683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c2a3f78e7%3A0xe2a818e69818815!2sMarket%20St%2C%20San%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Clinic Location"
-            ></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.565983756306!2d-122.41846172346761!3d37.77669141253683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c2a3f78e7%3A0xe2a818e69818815!2sMarket%20St%2C%20San%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Clinic Location"></iframe>
           </div>
         </div>
       </div>
@@ -472,21 +502,11 @@
         </div>
         <div>
           <div class="footer-col-title">Services</div>
-          <ul class="footer-links">
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Doctors</a></li>
-          </ul>
+          <ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li><li><a href="#">Doctors</a></li></ul>
         </div>
         <div>
           <div class="footer-col-title">Careers</div>
-          <ul class="footer-links">
-            <li><a href="#">Doctors Jobs</a></li>
-            <li><a href="#">Coming Jobs</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Health</a></li>
-          </ul>
+          <ul class="footer-links"><li><a href="#">Doctors Jobs</a></li><li><a href="#">Coming Jobs</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Health</a></li></ul>
         </div>
         <div>
           <div class="footer-col-title">Get in Touch</div>
@@ -497,36 +517,10 @@
       </div>
       <div class="footer-bottom">
         <div class="footer-copy">&copy; 2024 Smile Craft Dental Clinic. All rights reserved.</div>
-        <div class="footer-bottom-links">
-          <a href="#">Specialists</a>
-          <a href="#">Benefits</a>
-          <a href="#">Health</a>
-        </div>
+        <div class="footer-bottom-links"><a href="#">Specialists</a><a href="#">Benefits</a><a href="#">Health</a></div>
       </div>
     </div>
   </footer>
-
-  <!-- FLOATING MOBILE NAV -->
-  <nav class="mfn" id="mobileFloatNav" aria-label="Mobile navigation">
-    <div class="mfn-track">
-      <a href="index.html"    class="mfn-item mfn-item--active">
-        <span class="material-icons mfn-icon">home</span>
-        <span class="mfn-label">Home</span>
-      </a>
-      <a href="services.html" class="mfn-item">
-        <span class="material-icons mfn-icon">medical_services</span>
-        <span class="mfn-label">Services</span>
-      </a>
-      <a href="book.html"     class="mfn-item">
-        <span class="material-icons mfn-icon">calendar_today</span>
-        <span class="mfn-label">Book</span>
-      </a>
-      <a href="contact.html"  class="mfn-item">
-        <span class="material-icons mfn-icon">more_horiz</span>
-        <span class="mfn-label">More</span>
-      </a>
-    </div>
-  </nav>
 
   <!-- BOOKING POPUP -->
   <div class="bk-overlay" id="bookPopup" role="dialog" aria-modal="true" aria-labelledby="bkTitle">
@@ -535,27 +529,10 @@
       <h2 class="bk-title" id="bkTitle">Book an Appointment</h2>
       <p class="bk-subtitle">We'll confirm your slot within a few hours</p>
       <form class="bk-form" id="bkForm" novalidate>
-        <div class="bk-field">
-          <span class="material-icons bk-field-icon">person</span>
-          <input class="bk-input" type="text" placeholder="Name" required />
-        </div>
-        <div class="bk-field">
-          <span class="material-icons bk-field-icon">phone</span>
-          <input class="bk-input" type="tel" placeholder="Phone" required />
-        </div>
-        <div class="bk-field bk-select-wrap">
-          <span class="material-icons bk-field-icon">location_on</span>
-          <select class="bk-select" required>
-            <option value="">Select a Location</option>
-            <option>San Francisco — Main Clinic</option>
-            <option>Anna Nagar Branch</option>
-            <option>Velachery Branch</option>
-          </select>
-        </div>
-        <div class="bk-field">
-          <span class="material-icons bk-field-icon">calendar_today</span>
-          <input class="bk-input" type="date" required />
-        </div>
+        <div class="bk-field"><span class="material-icons bk-field-icon">person</span><input class="bk-input" type="text" placeholder="Name" required /></div>
+        <div class="bk-field"><span class="material-icons bk-field-icon">phone</span><input class="bk-input" type="tel" placeholder="Phone" required /></div>
+        <div class="bk-field bk-select-wrap"><span class="material-icons bk-field-icon">location_on</span><select class="bk-select" required><option value="">Select a Location</option><option>San Francisco — Main Clinic</option><option>Anna Nagar Branch</option><option>Velachery Branch</option></select></div>
+        <div class="bk-field"><span class="material-icons bk-field-icon">calendar_today</span><input class="bk-input" type="date" required /></div>
         <button type="submit" class="bk-submit">Submit Request</button>
       </form>
       <div class="bk-success" id="bkSuccess">
@@ -567,8 +544,7 @@
     </div>
   </div>
 
-  <!-- JavaScript — loaded last -->
   <script src="assets/js/index.js"></script>
-
+  <script src="assets/js/premium-mobile-nav.js"></script>
 </body>
 </html>
