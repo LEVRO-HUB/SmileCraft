@@ -1,6 +1,5 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — book.css
-   Pure Vanilla CSS | Book Appointment Page
+   SMILE CRAFT DENTAL — book.css  (v2 — Mobile Optimised)
    ============================================================ */
 
 :root {
@@ -8,7 +7,6 @@
   --primary-dark:   #16246A;
   --primary-light:  #EEF2FF;
 
-  /* mint aliases → primary blue */
   --mint:           #1E2F86;
   --mint-dark:      #16246A;
   --mint-light:     #EEF2FF;
@@ -82,7 +80,7 @@ input, select, textarea { font-family: inherit; }
 .reveal-d2.visible { transition-delay: .24s; }
 
 /* ============================================================
-   HEADER — Solid Primary Blue
+   HEADER — Sticky (intentional — booking page UX)
    ============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 200;
@@ -130,7 +128,6 @@ input, select, textarea { font-family: inherit; }
 .nav-dropdown-trigger .arrow { font-size: .7rem; transition: transform var(--transition); }
 .nav-dropdown.is-active .nav-dropdown-trigger { color: var(--white); }
 .nav-dropdown.is-active .arrow { transform: rotate(180deg); }
-
 .dropdown-menu {
   display: none; position: absolute; top: calc(100% + 14px); left: 0;
   background: var(--white); border: 1px solid var(--border);
@@ -146,24 +143,23 @@ input, select, textarea { font-family: inherit; }
 
 .header-actions { display: flex; align-items: center; gap: 1rem; }
 .header-cta { display: none; padding: .6rem 1.4rem; font-size: .875rem; }
-
-/* CTA on blue nav — white pill */
 .header-cta.btn-mint {
-  background: var(--white);
-  color: var(--primary);
+  background: var(--white); color: var(--primary);
   box-shadow: 0 4px 16px rgba(0,0,0,.2);
 }
 .header-cta.btn-mint:hover {
-  background: var(--primary-light);
-  color: var(--primary-dark);
+  background: var(--primary-light); color: var(--primary-dark);
   transform: translateY(-2px);
 }
 .active-page-btn { background: rgba(255,255,255,.25) !important; color: white !important; }
 
+/* FIX [B9]: WCAG 44×44px minimum touch target */
 .mobile-menu-btn {
   display: flex; align-items: center; justify-content: center;
-  width: 2.4rem; height: 2.4rem; border-radius: 8px;
-  color: var(--white); transition: background var(--transition);
+  min-width: 44px; min-height: 44px;
+  width: 2.75rem; height: 2.75rem;
+  border-radius: 8px; color: var(--white);
+  transition: background var(--transition);
 }
 .mobile-menu-btn:hover { background: rgba(255,255,255,.15); }
 .mobile-menu-btn .material-icons { font-size: 1.4rem !important; }
@@ -181,6 +177,8 @@ input, select, textarea { font-family: inherit; }
   text-transform: uppercase; letter-spacing: .1em; padding: .6rem 1rem .2rem;
 }
 .mobile-menu-divider { padding-top: 1rem; margin-top: .5rem; border-top: 1px solid rgba(255,255,255,.1); }
+
+.logo-img { height: 3rem; width: auto; display: block; object-fit: contain; }
 
 /* ============================================================
    BOOK HERO
@@ -225,7 +223,7 @@ input, select, textarea { font-family: inherit; }
 
 .book-hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-size: clamp(1.6rem, 4.5vw, 3.2rem);
   font-weight: 800; color: var(--dark); line-height: 1.1; margin-bottom: 1rem;
 }
 .book-hero-title em { font-style: normal; color: var(--primary); }
@@ -265,11 +263,10 @@ input, select, textarea { font-family: inherit; }
 }
 .book-step-label { font-size: .78rem; font-weight: 700; color: var(--muted); }
 .book-step--active .book-step-label { color: var(--primary); }
-
 .book-step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 1.5rem; }
 
 /* ============================================================
-   BOOK SECTION (main layout)
+   BOOK SECTION
    ============================================================ */
 .book-section { background: var(--white); padding: var(--section-py) 0 6rem; }
 
@@ -299,7 +296,7 @@ input, select, textarea { font-family: inherit; }
 
 .book-form { padding: 0 2rem 2rem; }
 
-/* ── Form rows ── */
+/* ── Form rows — 1-col by default, 2-col at 640px (handled in media query) ── */
 .form-row   { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
 .form-group { display: flex; flex-direction: column; gap: .4rem; }
 
@@ -310,7 +307,6 @@ input, select, textarea { font-family: inherit; }
 .req { color: var(--primary); }
 .form-optional { font-weight: 500; color: var(--muted); font-size: .75rem; }
 
-/* ── Input wrap ── */
 .input-wrap { position: relative; display: flex; align-items: center; }
 .input-icon {
   position: absolute; left: .875rem; top: 50%;
@@ -346,11 +342,18 @@ input, select, textarea { font-family: inherit; }
 
 .form-textarea { resize: vertical; padding-top: .875rem; min-height: 110px; line-height: 1.6; }
 .input-wrap--textarea { align-items: flex-start; }
-
 .form-error { font-size: .75rem; color: var(--error); font-weight: 600; min-height: 1rem; }
 
-/* ── Time slots ── */
-.time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-top: .25rem; }
+/* ── Time slots ──────────────────────────────────────────────
+   FIX [B3]: Default to 1-col on tiny screens. 3-col from 361px+.
+   On 320px: 3 cols each = ~65px — icon+text overflows.
+────────────────────────────────────────────── */
+.time-slots {
+  display: grid;
+  grid-template-columns: 1fr;   /* 320px safe default */
+  gap: .75rem;
+  margin-top: .25rem;
+}
 
 .time-slot { cursor: pointer; position: relative; }
 .time-slot input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -458,9 +461,7 @@ input, select, textarea { font-family: inherit; }
 .sidebar-card-header-icon { font-size: 1.2rem !important; color: var(--primary); }
 .sidebar-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: var(--dark); }
 
-/* Contact info */
 .sidebar-info-list { display: flex; flex-direction: column; gap: 0; }
-
 .sidebar-info-item {
   display: flex; align-items: center; gap: 1rem;
   padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
@@ -475,19 +476,11 @@ input, select, textarea { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
 }
 .sidebar-info-icon .material-icons { font-size: 1rem !important; }
-.logo-img {
-  height: 3rem;        /* adjust height to fit your navbar */
-  width: auto;
-  display: block;
-  object-fit: contain;
-}
-
 .sidebar-info-label { font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .15rem; }
-.sidebar-info-val { font-size: .9rem; font-weight: 600; color: var(--dark); }
+.sidebar-info-val { font-size: .9rem; font-weight: 600; color: var(--dark); word-break: break-word; }
 .sidebar-info-val--link { color: var(--primary); transition: color var(--transition); }
 .sidebar-info-val--link:hover { color: var(--primary-dark); text-decoration: underline; }
 
-/* Hours */
 .sidebar-hours { padding: 1.25rem 1.5rem; }
 .sidebar-hours-title {
   display: flex; align-items: center; gap: .4rem;
@@ -506,9 +499,10 @@ input, select, textarea { font-family: inherit; }
 .sidebar-hours-row--closed { opacity: .65; }
 .sidebar-hours-closed { font-weight: 700; color: var(--primary); }
 
-/* Map card */
-.sidebar-map-card { overflow: hidden; }
-
+/* FIX [B8]: Map iframe touch-scroll guard.
+   Pointer-events blocked by default. The .map-wrap--active class is
+   toggled by JS on tap (see book.js) to let users interact with map.
+   This prevents accidental map scroll hijacking during page scroll. */
 .map-branch-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
 .map-tab {
   flex: 1; padding: .875rem 1rem; font-size: .8rem; font-weight: 700;
@@ -525,10 +519,37 @@ input, select, textarea { font-family: inherit; }
 }
 .map-address .material-icons { font-size: .95rem !important; color: var(--primary); flex-shrink: 0; margin-top: 1px; }
 
-.map-wrap { height: 16rem; overflow: hidden; }
-.map-wrap iframe { width: 100%; height: 100%; border: 0; }
+.map-wrap {
+  height: 16rem; overflow: hidden; position: relative;
+}
 
-/* Why list */
+/* Tap-to-activate overlay (shown on touch devices only) */
+.map-wrap::after {
+  content: 'Tap to interact with map';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 600; color: var(--primary);
+  background: rgba(238,242,255,.85);
+  cursor: pointer;
+  transition: opacity .3s ease;
+}
+.map-wrap iframe {
+  width: 100%; height: 100%; border: 0;
+  pointer-events: none;   /* default: no scroll hijack */
+}
+
+/* When activated, remove overlay and enable iframe interaction */
+.map-wrap.is-active::after { display: none; }
+.map-wrap.is-active iframe { pointer-events: auto; }
+
+/* On desktop/mouse devices, no overlay needed */
+@media (hover: hover) and (pointer: fine) {
+  .map-wrap::after { display: none; }
+  .map-wrap iframe { pointer-events: auto; }
+}
+
+.sidebar-map-card { overflow: hidden; }
+
 .sidebar-why-list { list-style: none; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .875rem; }
 .sidebar-why-list li { display: flex; align-items: flex-start; gap: .75rem; font-size: .875rem; color: var(--text); }
 .why-icon {
@@ -571,7 +592,10 @@ input, select, textarea { font-family: inherit; }
 
 .footer-contact-item { display: flex; align-items: flex-start; gap: .6rem; margin-bottom: .65rem; }
 .footer-contact-item .material-icons { font-size: 1rem !important; color: rgba(255,255,255,.6); margin-top: .1rem; flex-shrink: 0; }
-.footer-contact-item span:last-child { font-size: .875rem; color: rgba(255,255,255,.55); line-height: 1.5; }
+.footer-contact-item span:last-child {
+  font-size: .875rem; color: rgba(255,255,255,.55);
+  line-height: 1.5; word-break: break-word;
+}
 
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.08); padding-top: 2rem;
@@ -607,6 +631,14 @@ input, select, textarea { font-family: inherit; }
 .mfn-label { font-size: .6875rem; font-weight: 600; color: #666; line-height: 1; }
 .mfn-item--active .mfn-label { color: #fff; }
 .mfn-item:not(.mfn-item--active):hover .mfn-label { color: var(--primary); }
+
+/* ============================================================
+   RESPONSIVE — 361px+ (fix time slots on tiny screens)
+   ============================================================ */
+@media (min-width: 361px) {
+  /* FIX [B3]: Restore 3-col time slots once there's enough width */
+  .time-slots { grid-template-columns: repeat(3, 1fr); }
+}
 
 /* ============================================================
    RESPONSIVE — 640px+
@@ -646,7 +678,6 @@ input, select, textarea { font-family: inherit; }
 }
 
 @media (max-width: 480px) {
-  .time-slots       { grid-template-columns: 1fr 1fr 1fr; }
   .book-steps       { padding: 1.25rem; }
   .book-form        { padding: 0 1.25rem 1.5rem; }
   .book-form-header { padding: 1.5rem 1.25rem 0; }

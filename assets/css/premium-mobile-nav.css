@@ -1,15 +1,21 @@
 /* ============================================================
-   SMILE CRAFT — PREMIUM MOBILE NAV (LIGHT THEME)
+   SMILE CRAFT — PREMIUM MOBILE NAV  (v2 — Fixed)
+   Light theme, brand blue, WCAG touch targets
    ============================================================ */
 
-/* ── Hamburger button ── */
+/* ── Hamburger button ──────────────────────────────────────
+   FIX [P3]: min-width/height 44px for WCAG 2.5.5 touch target
+────────────────────────────────────────────── */
 .hamburger {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 2.6rem;
-  height: 2.6rem;
+  min-width:  44px;
+  min-height: 44px;
+  width:  2.75rem;
+  height: 2.75rem;
   padding: 0.45rem 0.5rem;
   border-radius: 10px;
   cursor: pointer;
@@ -19,7 +25,7 @@
   position: relative;
   z-index: 9100;
 }
-.hamburger:hover { background: var(--mint-light); }
+.hamburger:hover { background: var(--primary-light); }
 
 .hamburger-bar {
   display: block;
@@ -36,7 +42,7 @@
 .hamburger-bar--bot { width: 22px; }
 
 /* X state */
-.hamburger.is-open .hamburger-bar--top { transform: translateY(7px) rotate(45deg); width: 22px; }
+.hamburger.is-open .hamburger-bar--top { transform: translateY(7px) rotate(45deg);  width: 22px; }
 .hamburger.is-open .hamburger-bar--mid { opacity: 0; transform: scaleX(0); }
 .hamburger.is-open .hamburger-bar--bot { transform: translateY(-7px) rotate(-45deg); width: 22px; }
 
@@ -57,8 +63,7 @@
 /* ── Drawer panel ── */
 .pmn-drawer {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 0; right: 0;
   height: 100%;
   width: min(88vw, 22rem);
   z-index: 9000;
@@ -67,34 +72,28 @@
   transform: translateX(110%);
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-
-  /* Light background */
   background: #ffffff;
   box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
 }
 .pmn-drawer.is-open { transform: translateX(0); }
 
-/* ── Decorative circles behind content ── */
+/* FIX [P4]: Decorative circles use primary blue, not teal */
 .pmn-drawer::before {
   content: '';
   position: absolute;
-  width: 22rem;
-  height: 22rem;
+  width: 22rem; height: 22rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.08) 0%, transparent 70%);
-  bottom: -6rem;
-  right: -6rem;
+  background: radial-gradient(circle, rgba(30,47,134,.07) 0%, transparent 70%);
+  bottom: -6rem; right: -6rem;
   pointer-events: none;
 }
 .pmn-drawer::after {
   content: '';
   position: absolute;
-  width: 14rem;
-  height: 14rem;
+  width: 14rem; height: 14rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.06) 0%, transparent 70%);
-  top: -3rem;
-  left: -3rem;
+  background: radial-gradient(circle, rgba(30,47,134,.05) 0%, transparent 70%);
+  top: -3rem; left: -3rem;
   pointer-events: none;
 }
 
@@ -111,52 +110,39 @@
 }
 
 .pmn-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  display: flex; align-items: center; gap: 0.6rem;
   text-decoration: none;
 }
+
+/* FIX [P5]: Logo mark shadow uses primary blue, not teal */
 .pmn-logo-mark {
-  width: 2.2rem;
-  height: 2.2rem;
-  background: var(--mint);
+  width: 2.2rem; height: 2.2rem;
+  background: var(--primary);
   border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   color: white;
-  box-shadow: 0 4px 14px rgba(45, 212, 191, 0.35);
+  box-shadow: 0 4px 14px rgba(30,47,134,.35);
 }
 .pmn-logo-mark .material-icons { font-size: 1.1rem !important; }
+
 .pmn-logo-text {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--dark);
+  font-size: 1.1rem; font-weight: 800; color: var(--dark);
 }
+.pmn-logo-text span { color: var(--primary-dark); }
 
-.logo-img {
-  height: 3rem;        /* adjust height to fit your navbar */
-  width: auto;
-  display: block;
-  object-fit: contain;
-}
-.pmn-logo-text span { color: var(--mint-dark); }
+.logo-img { height: 3rem; width: auto; display: block; object-fit: contain; }
 
 .pmn-close {
-  width: 2.2rem;
-  height: 2.2rem;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border);
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s ease;
+  /* WCAG touch target */
+  min-width: 44px; min-height: 44px;
 }
-.pmn-close:hover { background: var(--mint-light); color: var(--mint-dark); border-color: var(--mint-mid); }
+.pmn-close:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--mint-mid); }
 .pmn-close .material-icons { font-size: 1.1rem !important; }
 
 /* ── Scrollable body ── */
@@ -164,13 +150,9 @@
   flex: 1;
   overflow-y: auto;
   padding: 1.75rem 1.5rem;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 2rem;
   background: #ffffff;
-
   scrollbar-width: none;
 }
 .pmn-body::-webkit-scrollbar { display: none; }
@@ -179,20 +161,12 @@
 .pmn-nav { display: flex; flex-direction: column; gap: 0.25rem; }
 
 .pmn-nav-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.875rem 1rem;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--text);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.875rem 1rem; border-radius: 12px;
+  text-decoration: none; color: var(--text);
+  font-size: 1.0625rem; font-weight: 600; letter-spacing: 0.01em;
   border: 1px solid transparent;
-
-  opacity: 0;
-  transform: translateX(20px);
+  opacity: 0; transform: translateX(20px);
   transition: opacity 0.4s ease, transform 0.4s ease,
               background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
 }
@@ -203,60 +177,40 @@
 .pmn-drawer.is-open .pmn-nav-link:nth-child(4) { transition-delay: 0.23s; }
 .pmn-drawer.is-open .pmn-nav-link:nth-child(5) { transition-delay: 0.28s; }
 
-.pmn-nav-link:hover {
-  background: var(--mint-light);
-  color: var(--mint-dark);
-  border-color: var(--mint-mid);
-}
+.pmn-nav-link:hover,
 .pmn-nav-link.active {
-  background: var(--mint-light);
-  color: var(--mint-dark);
+  background: var(--primary-light);
+  color: var(--primary-dark);
   border-color: var(--mint-mid);
 }
 
 .pmn-nav-arrow {
-  width: 1.6rem;
-  height: 1.6rem;
-  background: var(--bg);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.22s ease, background 0.22s ease;
-  flex-shrink: 0;
+  width: 1.6rem; height: 1.6rem; background: var(--bg);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.22s ease, background 0.22s ease; flex-shrink: 0;
 }
-.pmn-nav-link:hover .pmn-nav-arrow  { background: var(--mint-mid); transform: translateX(3px); }
-.pmn-nav-link.active .pmn-nav-arrow { background: var(--mint-mid); }
+.pmn-nav-link:hover .pmn-nav-arrow,
+.pmn-nav-link.active .pmn-nav-arrow { background: var(--mint-mid); transform: translateX(3px); }
 .pmn-nav-arrow .material-icons { font-size: 0.8rem !important; color: var(--muted); }
-.pmn-nav-link:hover .pmn-nav-arrow .material-icons  { color: var(--mint-dark); }
-.pmn-nav-link.active .pmn-nav-arrow .material-icons { color: var(--mint-dark); }
+.pmn-nav-link:hover .pmn-nav-arrow .material-icons,
+.pmn-nav-link.active .pmn-nav-arrow .material-icons { color: var(--primary-dark); }
 
 /* ── Section label ── */
 .pmn-section-label {
-  font-size: 0.67rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 0 0.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 0 0.25rem; margin-bottom: 0.5rem;
 }
 
 /* ── Branch cards ── */
 .pmn-branches { display: flex; flex-direction: column; gap: 0.75rem; }
 
 .pmn-branch-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1rem;
-  border-radius: 14px;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem; border-radius: 14px;
+  background: var(--bg); border: 1px solid var(--border);
   text-decoration: none;
-
-  opacity: 0;
-  transform: translateX(20px);
+  opacity: 0; transform: translateX(20px);
   transition: opacity 0.4s ease, transform 0.4s ease,
               background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
@@ -264,131 +218,103 @@
 .pmn-drawer.is-open .pmn-branch-card:nth-child(1) { transition-delay: 0.3s; }
 .pmn-drawer.is-open .pmn-branch-card:nth-child(2) { transition-delay: 0.38s; }
 
+/* FIX [P8]: Branch card hover shadow uses primary blue */
 .pmn-branch-card:hover {
-  background: var(--mint-light);
+  background: var(--primary-light);
   border-color: var(--mint-mid);
-  box-shadow: 0 4px 20px rgba(45, 212, 191, 0.1);
+  box-shadow: 0 4px 20px rgba(30,47,134,.1);
 }
 .pmn-branch-card.active {
-  background: var(--mint-light);
+  background: var(--primary-light);
   border-color: var(--mint-mid);
 }
 
 .pmn-branch-icon {
-  width: 2.6rem;
-  height: 2.6rem;
-  border-radius: 10px;
-  background: white;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.22s ease, border-color 0.22s ease;
+  width: 2.6rem; height: 2.6rem; border-radius: 10px;
+  background: white; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.22s ease, border-color 0.22s ease;
 }
 .pmn-branch-card:hover .pmn-branch-icon,
 .pmn-branch-card.active .pmn-branch-icon {
-  background: var(--mint-mid);
-  border-color: var(--mint);
+  background: var(--mint-mid); border-color: var(--primary);
 }
-.pmn-branch-icon .material-icons { font-size: 1.1rem !important; color: var(--mint-dark); }
+.pmn-branch-icon .material-icons { font-size: 1.1rem !important; color: var(--primary-dark); }
 
 .pmn-branch-info { flex: 1; min-width: 0; }
 .pmn-branch-name {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--dark);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.875rem; font-weight: 700; color: var(--dark);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pmn-branch-addr {
-  font-size: 0.72rem;
-  color: var(--muted);
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-
 .pmn-branch-chevron .material-icons { font-size: 0.9rem !important; color: var(--muted); }
-.pmn-branch-card:hover .pmn-branch-chevron .material-icons { color: var(--mint-dark); }
+.pmn-branch-card:hover .pmn-branch-chevron .material-icons { color: var(--primary-dark); }
 
-/* ── CTA button ── */
+/* ── CTA button ────────────────────────────────────────────
+   FIX [P6]: Box shadow uses primary blue rgba, not hardcoded teal
+────────────────────────────────────────────── */
 .pmn-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, var(--mint-dark) 0%, var(--mint) 100%);
-  color: white;
-  font-weight: 700;
-  font-size: 0.9375rem;
-  border-radius: 14px;
-  text-decoration: none;
-  box-shadow: 0 6px 24px rgba(45, 212, 191, 0.3);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-
-  opacity: 0;
-  transform: translateY(10px);
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: white; font-weight: 700; font-size: 0.9375rem;
+  border-radius: 14px; text-decoration: none;
+  box-shadow: 0 6px 24px rgba(30,47,134,.3);   /* FIX [P6] */
+  opacity: 0; transform: translateY(10px);
   transition: opacity 0.4s ease 0.42s, transform 0.4s ease 0.42s,
               box-shadow 0.22s ease;
 }
 .pmn-drawer.is-open .pmn-cta { opacity: 1; transform: translateY(0); }
-.pmn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(45, 212, 191, 0.45); }
+
+/* FIX [P7]: Hover shadow uses primary blue */
+.pmn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(30,47,134,.45); }
 .pmn-cta .material-icons { font-size: 1rem !important; }
 
 /* ── Footer contact strip ── */
 .pmn-footer {
   border-top: 1px solid var(--border);
   padding: 1.25rem 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  position: relative;
-  z-index: 1;
+  display: flex; flex-direction: column; gap: 0.75rem;
+  position: relative; z-index: 1;
   background: var(--bg);
-
-  opacity: 0;
-  transform: translateY(8px);
+  opacity: 0; transform: translateY(8px);
   transition: opacity 0.4s ease 0.5s, transform 0.4s ease 0.5s;
 }
 .pmn-drawer.is-open .pmn-footer { opacity: 1; transform: translateY(0); }
 
 .pmn-footer-contact {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 500;
+  display: flex; align-items: center; gap: 0.65rem;
+  color: var(--muted); font-size: 0.8rem; font-weight: 500;
 }
-.pmn-footer-contact .material-icons { font-size: 0.95rem !important; color: var(--mint-dark); flex-shrink: 0; }
+.pmn-footer-contact .material-icons { font-size: 0.95rem !important; color: var(--primary-dark); flex-shrink: 0; }
 
-.pmn-socials {
-  display: flex;
-  gap: 0.6rem;
-  margin-top: 0.25rem;
-}
+.pmn-socials { display: flex; gap: 0.6rem; margin-top: 0.25rem; }
 .pmn-social {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 8px;
-  background: white;
-  border: 1px solid var(--border);
+  width: 2rem; height: 2rem; border-radius: 8px;
+  background: white; border: 1px solid var(--border);
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; transition: all 0.2s ease;
+  /* WCAG: expand touch area with min dimensions */
+  min-width: 44px; min-height: 44px;
 }
-.pmn-social:hover { background: var(--mint-light); border-color: var(--mint-mid); color: var(--mint-dark); }
+.pmn-social:hover { background: var(--primary-light); border-color: var(--mint-mid); color: var(--primary-dark); }
 .pmn-social .material-icons { font-size: 0.9rem !important; }
 
-/* ── Hide old mobile nav completely ── */
-.mfn { display: none !important; }
+/* ── FIX [P9]: Scope .mfn suppression to pages that have the premium drawer.
+   Only hide the floating pill if the premium drawer is present in the DOM.
+   Use the :has() selector for modern browsers; older browsers fallback gracefully.
+   For browsers without :has(), the .mfn remains visible (safe fallback).
+────────────────────────────────────────────── */
+@supports selector(:has(*)) {
+  body:has(.pmn-drawer) .mfn { display: none !important; }
+}
+
+/* Explicit class override for browsers where the page explicitly sets it */
+.pmn-nav-active .mfn { display: none !important; }
 
 /* ── Only show hamburger on mobile ── */
 @media (min-width: 1024px) {
@@ -396,6 +322,9 @@
   .pmn-drawer   { display: none !important; }
   .pmn-backdrop { display: none !important; }
 }
+
+/* FIX [P10]: Only suppress mobile padding when premium nav is in use.
+   Pages loading pmn.css have the drawer, so removing floating nav padding is correct. */
 @media (max-width: 1023px) {
   .mobile-menu-btn { display: none !important; }
   body { padding-bottom: 0 !important; }

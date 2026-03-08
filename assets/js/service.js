@@ -1,7 +1,8 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — services.js
-   Pure Vanilla JavaScript | Services Page
+   SMILE CRAFT DENTAL — services.js  (v2 — Fixed)
    ============================================================ */
+
+'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -18,16 +19,17 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ──────────────────────────────────────────────
      2. MOBILE MENU TOGGLE
   ────────────────────────────────────────────── */
-  const menuBtn  = document.getElementById('mobileMenuBtn');
+  const menuBtn    = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
 
   if (menuBtn && mobileMenu) {
     menuBtn.addEventListener('click', function () {
       const isOpen = mobileMenu.classList.toggle('is-open');
-      menuBtn.setAttribute('aria-expanded', isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
       const icon = menuBtn.querySelector('.material-icons');
       if (icon) icon.textContent = isOpen ? 'close' : 'menu';
     });
+
     mobileMenu.querySelectorAll('.mobile-nav-link').forEach(function (link) {
       link.addEventListener('click', function () {
         mobileMenu.classList.remove('is-open');
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ──────────────────────────────────────────────
      3. SCROLL REVEAL
+     FIX #2: Added rootMargin to clear floating nav on mobile.
   ────────────────────────────────────────────── */
   const revealEls = document.querySelectorAll('.reveal');
 
@@ -51,90 +54,86 @@ document.addEventListener('DOMContentLoaded', function () {
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, {
+      threshold:  0.10,
+      rootMargin: '0px 0px -72px 0px',
+    });
     revealEls.forEach(function (el) { obs.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('visible'); });
   }
+
   /* ──────────────────────────────────────────────
-   BEFORE & AFTER DRAG SLIDER
-────────────────────────────────────────────── */
-(function () {
-  function initSlider(slider) {
-    var beforeDiv = slider.querySelector('.ba-before');
-    var beforeImg = slider.querySelector('.ba-before img');
-    var handle    = slider.querySelector('.ba-handle');
-    var active    = false;
+     4. BEFORE & AFTER DRAG SLIDER
+     FIX #1: Was embedded inside DOMContentLoaded but
+     placed OUTSIDE the closing }); — silent syntax error.
+     Now correctly placed inside the callback as a
+     self-contained IIFE.
+  ────────────────────────────────────────────── */
+  (function () {
+    function initSlider(slider) {
+      var beforeDiv = slider.querySelector('.ba-before');
+      var beforeImg = slider.querySelector('.ba-before img');
+      var handle    = slider.querySelector('.ba-handle');
+      if (!beforeDiv || !beforeImg || !handle) return;
 
-    function syncWidths() {
-      var w = slider.getBoundingClientRect().width;
-      if (!w) return;
-      // Tell the image to always be the full slider width
-      beforeImg.style.width = w + 'px';
-      // Start at 50%
-      var half = w * 0.5;
-      beforeDiv.style.width = half + 'px';
-      handle.style.left     = half + 'px';
-      handle.style.transform = 'translateX(-50%)';
-    }
+      var active = false;
 
-    function update(clientX) {
-      var rect = slider.getBoundingClientRect();
-      var px   = clientX - rect.left;
-      px = Math.min(Math.max(px, 4), rect.width - 4);
-
-      beforeDiv.style.width  = px + 'px';
-      beforeImg.style.width  = rect.width + 'px'; // always full width
-      handle.style.left      = px + 'px';
-      handle.style.transform = 'translateX(-50%)';
-    }
-
-    // Init on load + resize
-    if (document.readyState === 'complete') {
-      syncWidths();
-    } else {
-      window.addEventListener('load', syncWidths);
-    }
-    window.addEventListener('resize', syncWidths);
-
-    // Mouse events
-    slider.addEventListener('mousedown', function (e) {
-      active = true;
-      update(e.clientX);
-      e.preventDefault();
-    });
-    document.addEventListener('mousemove', function (e) {
-      if (active) update(e.clientX);
-    });
-    document.addEventListener('mouseup', function () {
-      active = false;
-    });
-
-    // Touch events
-    slider.addEventListener('touchstart', function (e) {
-      active = true;
-      update(e.touches[0].clientX);
-    }, { passive: true });
-
-    slider.addEventListener('touchmove', function (e) {
-      if (active) {
-        update(e.touches[0].clientX);
-        e.preventDefault();
+      function syncWidths() {
+        var w = slider.getBoundingClientRect().width;
+        if (!w) return;
+        beforeImg.style.width  = w + 'px';
+        var half = w * 0.5;
+        beforeDiv.style.width  = half + 'px';
+        handle.style.left      = half + 'px';
+        handle.style.transform = 'translateX(-50%)';
       }
-    }, { passive: false });
 
-    slider.addEventListener('touchend', function () {
-      active = false;
+      function update(clientX) {
+        var rect = slider.getBoundingClientRect();
+        var px   = Math.min(Math.max(clientX - rect.left, 4), rect.width - 4);
+        beforeDiv.style.width  = px + 'px';
+        beforeImg.style.width  = rect.width + 'px';
+        handle.style.left      = px + 'px';
+        handle.style.transform = 'translateX(-50%)';
+      }
+
+      // Initialise on load + resize
+      if (document.readyState === 'complete') {
+        syncWidths();
+      } else {
+        window.addEventListener('load', syncWidths);
+      }
+      window.addEventListener('resize', syncWidths, { passive: true });
+
+      // Mouse
+      slider.addEventListener('mousedown', function (e) {
+        active = true; update(e.clientX); e.preventDefault();
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (active) update(e.clientX);
+      });
+      document.addEventListener('mouseup', function () { active = false; });
+
+      // Touch
+      slider.addEventListener('touchstart', function (e) {
+        active = true; update(e.touches[0].clientX);
+      }, { passive: true });
+
+      slider.addEventListener('touchmove', function (e) {
+        if (active) { update(e.touches[0].clientX); e.preventDefault(); }
+      }, { passive: false });
+
+      slider.addEventListener('touchend', function () { active = false; });
+    }
+
+    document.querySelectorAll('.ba-slider').forEach(function (slider) {
+      initSlider(slider);
     });
-  }
+  })();
 
-  // Init all sliders
-  document.querySelectorAll('.ba-slider').forEach(function (slider) {
-    initSlider(slider);
-  });
-})();
   /* ──────────────────────────────────────────────
-     4. FAQ ACCORDION
+     5. FAQ ACCORDION
   ────────────────────────────────────────────── */
   const faqItems = document.querySelectorAll('.faq-item');
 
@@ -161,7 +160,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ──────────────────────────────────────────────
-     5. NEWSLETTER FORM
+     6. NEWSLETTER FORM
+     FIX #3: Uses var(--primary-dark) instead of
+     old teal var(--mint-dark) token.
   ────────────────────────────────────────────── */
   const nlForm = document.getElementById('nlForm');
   if (nlForm) {
@@ -171,13 +172,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const button = nlForm.querySelector('.nl-btn');
       if (!input || !button) return;
 
+      const original = button.textContent;
       button.textContent = 'Subscribed! ✓';
-      button.style.background = 'var(--mint-dark)';
+      button.style.background = 'var(--primary-dark)';
       button.disabled = true;
       input.value = '';
 
       setTimeout(function () {
-        button.textContent = 'Subscribe';
+        button.textContent  = original;
         button.style.background = '';
         button.disabled = false;
       }, 4000);
@@ -185,39 +187,39 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ──────────────────────────────────────────────
-     6. SMOOTH SCROLL for anchor links
+     7. SMOOTH SCROLL for anchor links
   ────────────────────────────────────────────── */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        const headerH = header ? header.offsetHeight : 0;
-        const top = target.getBoundingClientRect().top + window.scrollY - headerH - 20;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-      }
+      if (!target) return;
+      e.preventDefault();
+      const headerH = header ? header.offsetHeight : 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerH - 20;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
 
   /* ──────────────────────────────────────────────
-     7. SERVICE CARD HOVER — subtle tilt effect
+     8. SERVICE CARD HOVER — subtle tilt effect
+     FIX #4: Added prefers-reduced-motion guard.
   ────────────────────────────────────────────── */
-  document.querySelectorAll('.svc-card').forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      const rect   = card.getBoundingClientRect();
-      const x      = (e.clientX - rect.left) / rect.width  - 0.5;
-      const y      = (e.clientY - rect.top)  / rect.height - 0.5;
-      const tiltX  = +(y * 6).toFixed(2);
-      const tiltY  = -(x * 6).toFixed(2);
-      card.style.transform = 'translateY(-8px) perspective(600px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg)';
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.svc-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect  = card.getBoundingClientRect();
+        const x     = (e.clientX - rect.left) / rect.width  - 0.5;
+        const y     = (e.clientY - rect.top)  / rect.height - 0.5;
+        card.style.transform = 'translateY(-8px) perspective(600px) rotateX(' + (y * 6).toFixed(2) + 'deg) rotateY(' + (-x * 6).toFixed(2) + 'deg)';
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
     });
-    card.addEventListener('mouseleave', function () {
-      card.style.transform = '';
-    });
-  });
+  }
 
   /* ──────────────────────────────────────────────
-     8. PRICING CARD HIGHLIGHT ON HOVER
+     9. PRICING CARD HIGHLIGHT ON HOVER
   ────────────────────────────────────────────── */
   document.querySelectorAll('.pricing-card').forEach(function (card) {
     card.addEventListener('mouseenter', function () {
@@ -235,10 +237,14 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ──────────────────────────────────────────────
-     9. ACTIVE NAV LINK on scroll (highlight section)
+     10. ACTIVE NAV LINK on scroll
+     FIX #5: Lowered threshold from 0.4 → 0.2 so
+     shorter sections still trigger the active state.
+     Added rootMargin top offset so sections near the
+     sticky header register at the right moment.
   ────────────────────────────────────────────── */
-  const sections  = document.querySelectorAll('section[id]');
-  const navLinks  = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
 
   if (sections.length && navLinks.length) {
     const sectionObs = new IntersectionObserver(function (entries) {
@@ -252,8 +258,11 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         }
       });
-    }, { threshold: 0.4 });
+    }, {
+      threshold:  0.2,
+      rootMargin: '-80px 0px -40% 0px', // offset for sticky header top
+    });
     sections.forEach(function (s) { sectionObs.observe(s); });
   }
 
-});
+}); // end DOMContentLoaded

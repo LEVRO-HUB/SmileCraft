@@ -1,13 +1,11 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — book.js  (v2 — Google Sheets Integration)
-   Book Appointment Page JavaScript
+   SMILE CRAFT DENTAL — book.js  (v3 — Fixed)
    ============================================================ */
 
 'use strict';
 
 /* ──────────────────────────────────────────────────────────────
-   ★  REPLACE THIS URL with your deployed Apps Script Web App URL
-      (Apps Script → Deploy → New Deployment → Web App)
+   ★  Keep in sync with index.js and contact.js
 ────────────────────────────────────────────────────────────── */
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NWWGaSKcOKpnilW6VcFO2OVWYIaFQIV8zR6o1Mzeab6L-viV0thVMp/exec';
 
@@ -41,7 +39,10 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   });
 })();
 
-/* ── 3. SCROLL REVEAL ── */
+/* ── 3. SCROLL REVEAL ──────────────────────────────────────
+   FIX #13: rootMargin bottom offset clears mobile floating
+   nav bar so elements near the bottom still trigger.
+──────────────────────────────────────────────────────────── */
 (function () {
   const els = document.querySelectorAll('.reveal');
   if (!els.length) return;
@@ -49,7 +50,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
     (entries) => entries.forEach((e) => {
       if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
     }),
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.10, rootMargin: '0px 0px -72px 0px' }
   );
   els.forEach((el) => io.observe(el));
 })();
@@ -59,12 +60,11 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   const dateInput = document.getElementById('bkDate');
   if (!dateInput) return;
 
-  const pad = (n) => String(n).padStart(2, '0');
+  const pad   = (n) => String(n).padStart(2, '0');
   const today = new Date();
   if (today.getDay() === 0) today.setDate(today.getDate() + 1);
   dateInput.min = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 
-  // Max: 3 months ahead
   const max = new Date();
   max.setMonth(max.getMonth() + 3);
   dateInput.max = `${max.getFullYear()}-${pad(max.getMonth() + 1)}-${pad(max.getDate())}`;
@@ -74,6 +74,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
     if (selected.getDay() === 0) {
       showFieldError('err-date', 'We are closed on Sundays. Please select another day.');
       dateInput.classList.add('input-error');
+      dateInput.classList.remove('input-success');
     } else {
       clearFieldError('err-date');
       dateInput.classList.remove('input-error');
@@ -85,12 +86,12 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
 /* ── 5. REAL-TIME INPUT VALIDATION ── */
 (function () {
   const rules = {
-    bkFullName: { el: document.getElementById('bkFullName'), errId: 'err-name',    test: (v) => v.trim().length >= 2,                               msg: 'Please enter your full name (min 2 characters).' },
-    bkEmail:    { el: document.getElementById('bkEmail'),    errId: 'err-email',   test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),        msg: 'Please enter a valid email address.' },
-    bkPhone:    { el: document.getElementById('bkPhone'),    errId: 'err-phone',   test: (v) => /^[\d\s\+\-\(\)]{7,15}$/.test(v.trim()),            msg: 'Please enter a valid phone number.' },
-    bkBranch:   { el: document.getElementById('bkBranch'),   errId: 'err-branch',  test: (v) => v !== '',                                            msg: 'Please select a branch.' },
-    bkDate:     { el: document.getElementById('bkDate'),     errId: 'err-date',    test: (v) => v !== '' && new Date(v + 'T00:00:00').getDay() !== 0, msg: 'Please select a valid date (not Sunday).' },
-    bkService:  { el: document.getElementById('bkService'),  errId: 'err-service', test: (v) => v !== '',                                            msg: 'Please select a service.' },
+    bkFullName: { el: document.getElementById('bkFullName'), errId: 'err-name',    test: (v) => v.trim().length >= 2,                                msg: 'Please enter your full name (min 2 characters).' },
+    bkEmail:    { el: document.getElementById('bkEmail'),    errId: 'err-email',   test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),         msg: 'Please enter a valid email address.' },
+    bkPhone:    { el: document.getElementById('bkPhone'),    errId: 'err-phone',   test: (v) => /^[\d\s\+\-\(\)]{7,15}$/.test(v.trim()),             msg: 'Please enter a valid phone number.' },
+    bkBranch:   { el: document.getElementById('bkBranch'),   errId: 'err-branch',  test: (v) => v !== '',                                             msg: 'Please select a branch.' },
+    bkDate:     { el: document.getElementById('bkDate'),     errId: 'err-date',    test: (v) => v !== '' && new Date(v + 'T00:00:00').getDay() !== 0,  msg: 'Please select a valid date (not Sunday).' },
+    bkService:  { el: document.getElementById('bkService'),  errId: 'err-service', test: (v) => v !== '',                                             msg: 'Please select a service.' },
   };
 
   Object.values(rules).forEach(({ el, errId, test, msg }) => {
@@ -171,21 +172,23 @@ function collectBookingData(source) {
 
 /* ── 8. SUBMIT TO GOOGLE SHEETS ── */
 async function submitToGoogleSheets(data) {
-  // Uses no-cors because Apps Script Web Apps don't support CORS preflight properly.
-  // We fire-and-forget; success is assumed if no network error.
   await fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode:   'no-cors',   // Required for Apps Script cross-origin
-    headers: { 'Content-Type': 'text/plain' },  // text/plain avoids OPTIONS preflight
-    body:   JSON.stringify(data),
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body:    JSON.stringify(data),
   });
 }
 
-/* ── 9. BOOKING PAGE FORM SUBMISSION ── */
+/* ── 9. BOOKING PAGE FORM SUBMISSION ──────────────────────
+   FIX #7: submitBtn loading state is correctly cleaned up
+   BEFORE showing success (not after), so the button reset
+   is logically ordered even if the button becomes hidden.
+──────────────────────────────────────────────────────────── */
 (function () {
   const form      = document.getElementById('bookingForm');
   const success   = document.getElementById('bookSuccess');
-  const header    = document.querySelector('.book-form-header');
+  const formHdr   = document.querySelector('.book-form-header');
   const submitBtn = document.getElementById('submitBtn');
   const refEl     = document.getElementById('successRef');
 
@@ -194,10 +197,9 @@ async function submitToGoogleSheets(data) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Validate all fields
+    // Validate
     const rules = window._bookRules || {};
-    let   valid = true;
-
+    let valid = true;
     Object.values(rules).forEach(({ el, errId, test, msg }) => {
       if (!el) return;
       if (!test(el.value)) {
@@ -216,7 +218,6 @@ async function submitToGoogleSheets(data) {
       return;
     }
 
-    // Show loading state
     submitBtn.classList.add('loading');
     submitBtn.disabled = true;
 
@@ -226,23 +227,19 @@ async function submitToGoogleSheets(data) {
       await submitToGoogleSheets(data);
     } catch (err) {
       console.warn('Sheets submission error (non-critical):', err);
-      // We still show success — the no-cors fetch may throw but data is sent
     }
 
-    // Update ref number display
-    if (refEl) refEl.textContent = data.ref;
-
-    // Update step indicator
-    updateSteps(3);
-
-    // Show success state
-    form.classList.add('is-hidden');
-    if (header) header.classList.add('is-hidden');
-    success.classList.add('is-shown');
-    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
+    // FIX #7: reset button state BEFORE hiding the form
     submitBtn.classList.remove('loading');
     submitBtn.disabled = false;
+
+    if (refEl) refEl.textContent = data.ref;
+    updateSteps(3);
+
+    form.classList.add('is-hidden');
+    if (formHdr) formHdr.classList.add('is-hidden');
+    success.classList.add('is-shown');
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 })();
 
@@ -256,18 +253,17 @@ function updateSteps(activeStep) {
   });
   lines.forEach((line, i) => {
     line.style.background = i + 1 < activeStep
-      ? 'linear-gradient(90deg, var(--mint), var(--mint-dark))'
+      ? 'linear-gradient(90deg, var(--primary), var(--primary-dark))'
       : 'var(--border)';
   });
 }
 
-// Done state + shake CSS
 (function () {
   const style = document.createElement('style');
   style.textContent = `
     .book-step--done .book-step-num {
-      background: var(--mint-dark) !important;
-      border-color: var(--mint-dark) !important;
+      background: var(--primary-dark) !important;
+      border-color: var(--primary-dark) !important;
       color: white !important;
     }
     .book-step--done .book-step-num::after {
@@ -275,7 +271,7 @@ function updateSteps(activeStep) {
       font-family: 'Material Icons';
       font-size: 1rem;
     }
-    .book-step--done .book-step-label { color: var(--mint-dark) !important; }
+    .book-step--done .book-step-label { color: var(--primary-dark) !important; }
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20%      { transform: translateX(-6px); }
@@ -290,12 +286,10 @@ function updateSteps(activeStep) {
 
 /* ── 11. HELPER FUNCTIONS ── */
 function showFieldError(errId, msg) {
-  const el = document.getElementById(errId);
-  if (el) el.textContent = msg;
+  const el = document.getElementById(errId); if (el) el.textContent = msg;
 }
 function clearFieldError(errId) {
-  const el = document.getElementById(errId);
-  if (el) el.textContent = '';
+  const el = document.getElementById(errId); if (el) el.textContent = '';
 }
 
 /* ── 12. INPUT FOCUS GLOW ── */
@@ -307,7 +301,7 @@ function clearFieldError(errId) {
     input.addEventListener('blur',  () => wrap.classList.remove('focused'));
   });
   const style = document.createElement('style');
-  style.textContent = `.input-wrap.focused .input-icon { color: var(--mint-dark) !important; }`;
+  style.textContent = `.input-wrap.focused .input-icon { color: var(--primary-dark) !important; }`;
   document.head.appendChild(style);
 })();
 

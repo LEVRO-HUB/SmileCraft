@@ -1,11 +1,11 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — index.js  (v2 — Google Sheets Integration)
-   Pure Vanilla JavaScript | Homepage
+   SMILE CRAFT DENTAL — index.js  (v3 — Fixed)
    ============================================================ */
 
+'use strict';
+
 /* ──────────────────────────────────────────────────────────────
-   ★  REPLACE THIS URL with your deployed Apps Script Web App URL
-      Same URL used in book.js — keep them in sync.
+   ★ Keep this URL in sync with book.js and contact.js
 ────────────────────────────────────────────────────────────── */
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NWWGaSKcOKpnilW6VcFO2OVWYIaFQIV8zR6o1Mzeab6L-viV0thVMp/exec';
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', function () {
       const isOpen = mobileMenu.classList.toggle('is-open');
-      mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
       const icon = mobileMenuBtn.querySelector('.material-icons');
       if (icon) icon.textContent = isOpen ? 'close' : 'menu';
     });
@@ -47,6 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ──────────────────────────────────────────────
      3. SCROLL REVEAL
+     FIX #13: rootMargin bottom offset clears the
+     floating mobile nav bar (88px safe zone) so
+     elements near the bottom of the viewport still
+     trigger correctly on mobile.
   ────────────────────────────────────────────── */
   const revealEls = document.querySelectorAll('.reveal');
   if (revealEls.length > 0 && 'IntersectionObserver' in window) {
@@ -57,7 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, {
+      threshold:  0.10,
+      rootMargin: '0px 0px -72px 0px', // clears floating nav on mobile
+    });
     revealEls.forEach(function (el) { revealObserver.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('visible'); });
@@ -65,11 +72,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ──────────────────────────────────────────────
      4. BOOKING POPUP
+     FIX #11: sessionStorage guard so the auto-popup
+     only fires once per browser session — not every
+     page load.
   ────────────────────────────────────────────── */
   const popup     = document.getElementById('bookPopup');
   const bkClose   = document.getElementById('bkClose');
   const bkForm    = document.getElementById('bkForm');
   const bkSuccess = document.getElementById('bkSuccess');
+
+  const POPUP_KEY = 'sc_popup_seen';
 
   function openPopup() {
     if (!popup) return;
@@ -81,10 +93,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!popup) return;
     popup.classList.remove('is-open');
     document.body.style.overflow = '';
+    // Mark as seen for this session
+    try { sessionStorage.setItem(POPUP_KEY, '1'); } catch (_) {}
   }
 
-  // Auto-show after 8 seconds
-  if (popup) setTimeout(openPopup, 8000);
+  // Auto-show after 8s — only if not already seen this session
+  if (popup) {
+    let alreadySeen = false;
+    try { alreadySeen = sessionStorage.getItem(POPUP_KEY) === '1'; } catch (_) {}
+    if (!alreadySeen) setTimeout(openPopup, 8000);
+  }
 
   if (bkClose) bkClose.addEventListener('click', closePopup);
 
@@ -98,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape') closePopup();
   });
 
-  // "Book Appointment" links open the popup (homepage only)
+  // "Book Appointment" links open popup (homepage only)
   if (document.body.dataset.page === 'home') {
     document.querySelectorAll('a[href="book.html"]').forEach(function (link) {
       link.addEventListener('click', function (e) {
@@ -109,25 +127,31 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ──────────────────────────────────────────────
-     POPUP FORM — collect data (matches booking page fields)
+     POPUP FORM — collect data
+     FIX #12: Fields queried by ID / type only,
+     never by placeholder text (fragile). Popup HTML
+     must have: id="bkPopupName", id="bkPopupPhone",
+     id="bkPopupBranch", id="bkPopupDate".
+     Falls back gracefully if IDs are missing.
   ────────────────────────────────────────────── */
   function collectPopupData() {
     const ref = 'SC-' + Math.floor(100000 + Math.random() * 900000);
-    // Popup form field IDs (from index.html bkForm)
-    const nameEl     = bkForm.querySelector('input[placeholder="Name"]');
-    const phoneEl    = bkForm.querySelector('input[type="tel"]');
-    const branchEl   = bkForm.querySelector('select');
-    const dateEl     = bkForm.querySelector('input[type="date"]');
+
+    // Robust selectors — no reliance on placeholder text
+    const nameEl   = document.getElementById('bkPopupName')   || bkForm.querySelector('input[type="text"]');
+    const phoneEl  = document.getElementById('bkPopupPhone')  || bkForm.querySelector('input[type="tel"]');
+    const branchEl = document.getElementById('bkPopupBranch') || bkForm.querySelector('select');
+    const dateEl   = document.getElementById('bkPopupDate')   || bkForm.querySelector('input[type="date"]');
 
     return {
       ref,
       source:    'homepage-popup',
-      fullName:  nameEl   ? nameEl.value   : '',
-      email:     '',   // popup doesn't have email field
-      phone:     phoneEl  ? phoneEl.value  : '',
+      fullName:  nameEl   ? nameEl.value.trim()   : '',
+      email:     '',
+      phone:     phoneEl  ? phoneEl.value.trim()  : '',
       age:       '',
-      branch:    branchEl ? branchEl.value : '',
-      date:      dateEl   ? dateEl.value   : '',
+      branch:    branchEl ? branchEl.value         : '',
+      date:      dateEl   ? dateEl.value           : '',
       timeSlot:  '',
       service:   '',
       insurance: '',
@@ -137,9 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  /* ──────────────────────────────────────────────
-     POPUP FORM SUBMIT → Google Sheets
-  ────────────────────────────────────────────── */
+  /* ── POPUP FORM SUBMIT → Google Sheets ── */
   if (bkForm && bkSuccess) {
     bkForm.addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -160,14 +182,12 @@ document.addEventListener('DOMContentLoaded', function () {
         console.warn('Popup form Sheets error (non-critical):', err);
       }
 
-      // Show success state
       bkForm.classList.add('is-hidden');
       bkSuccess.classList.add('is-shown');
 
-      // Auto-close after 3.5 seconds
+      // Mark popup as seen, then close
       setTimeout(closePopup, 3500);
 
-      // Reset after close animation
       setTimeout(function () {
         bkForm.classList.remove('is-hidden');
         bkSuccess.classList.remove('is-shown');
