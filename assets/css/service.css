@@ -431,14 +431,14 @@ input, select { font-family: inherit; }
   letter-spacing: .12em; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem;
 }
 .step-icon-wrap {
-  width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  width: 4rem; height: 4rem; border-radius: 50%;
   background: var(--primary-light);
   display: flex; align-items: center; justify-content: center;
   margin-inline: auto; margin-bottom: 1rem;
   color: var(--primary); transition: all var(--transition);
 }
 .process-step:hover .step-icon-wrap { background: var(--primary); color: white; transform: scale(1.1); }
-.step-icon-wrap .material-icons { font-size: 1.4rem !important; }
+.step-icon-wrap .material-icons { font-size: 2rem !important; }
 .step-title { font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: .5rem; }
 .step-desc  { font-size: .8125rem; color: var(--muted); line-height: 1.6; }
 
