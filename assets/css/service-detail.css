@@ -39,8 +39,8 @@
 
   --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 
-  --font-body:    'Italiana', sans-serif;
-  --font-display: 'Italiana', sans-serif;
+  --font-body:    "IBM Plex Sans", sans-serif;
+  --font-display: "Exo 2", sans-serif;
 
   --section-py: 5rem;
   --container:  1180px;

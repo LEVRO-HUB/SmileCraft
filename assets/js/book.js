@@ -1,12 +1,9 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — book.js  (v3 — Fixed)
+   SMILE CRAFT DENTAL — book.js  (v4 — Sundays allowed)
    ============================================================ */
 
 'use strict';
 
-/* ──────────────────────────────────────────────────────────────
-   ★  Keep in sync with index.js and contact.js
-────────────────────────────────────────────────────────────── */
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NWWGaSKcOKpnilW6VcFO2OVWYIaFQIV8zR6o1Mzeab6L-viV0thVMp/exec';
 
 /* ── 1. HEADER SCROLL SHADOW ── */
@@ -18,31 +15,46 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   onScroll();
 })();
 
-/* ── 2. MOBILE MENU TOGGLE ── */
+/* ── 2. DESKTOP NAV DROPDOWN ── */
 (function () {
-  const btn  = document.getElementById('mobileMenuBtn');
-  const menu = document.getElementById('mobileMenu');
-  if (!btn || !menu) return;
-
-  btn.addEventListener('click', () => {
-    const isOpen = menu.classList.toggle('is-open');
-    btn.setAttribute('aria-expanded', String(isOpen));
-    btn.querySelector('.material-icons').textContent = isOpen ? 'close' : 'menu';
+  function closeAll() {
+    document.querySelectorAll('.nav-dropdown.is-active').forEach(d => {
+      d.classList.remove('is-active');
+      const t = d.querySelector('.nav-dropdown-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+  document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+    const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.contains('is-active');
+      closeAll();
+      if (!isOpen) {
+        dropdown.classList.add('is-active');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+    dropdown.addEventListener('mouseenter', () => {
+      if (window.innerWidth >= 1024) {
+        closeAll();
+        dropdown.classList.add('is-active');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+    dropdown.addEventListener('mouseleave', () => {
+      if (window.innerWidth >= 1024) {
+        dropdown.classList.remove('is-active');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
   });
-
-  document.addEventListener('click', (e) => {
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('is-open');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.querySelector('.material-icons').textContent = 'menu';
-    }
-  });
+  document.addEventListener('click', closeAll);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
 })();
 
-/* ── 3. SCROLL REVEAL ──────────────────────────────────────
-   FIX #13: rootMargin bottom offset clears mobile floating
-   nav bar so elements near the bottom still trigger.
-──────────────────────────────────────────────────────────── */
+/* ── 3. SCROLL REVEAL ── */
 (function () {
   const els = document.querySelectorAll('.reveal');
   if (!els.length) return;
@@ -55,27 +67,27 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   els.forEach((el) => io.observe(el));
 })();
 
-/* ── 4. MIN DATE — today, skip Sundays ── */
+/* ── 4. DATE FIELD — min = today, no Sunday restriction ── */
 (function () {
   const dateInput = document.getElementById('bkDate');
   if (!dateInput) return;
 
   const pad   = (n) => String(n).padStart(2, '0');
   const today = new Date();
-  if (today.getDay() === 0) today.setDate(today.getDate() + 1);
   dateInput.min = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 
   const max = new Date();
   max.setMonth(max.getMonth() + 3);
   dateInput.max = `${max.getFullYear()}-${pad(max.getMonth() + 1)}-${pad(max.getDate())}`;
 
+  // Open native date picker on click anywhere in the field
+  dateInput.addEventListener('click', function () {
+    try { this.showPicker(); } catch (e) { this.focus(); }
+  });
+
+  // Simple valid-date check on change — no day-of-week restriction
   dateInput.addEventListener('change', () => {
-    const selected = new Date(dateInput.value + 'T00:00:00');
-    if (selected.getDay() === 0) {
-      showFieldError('err-date', 'We are closed on Sundays. Please select another day.');
-      dateInput.classList.add('input-error');
-      dateInput.classList.remove('input-success');
-    } else {
+    if (dateInput.value) {
       clearFieldError('err-date');
       dateInput.classList.remove('input-error');
       dateInput.classList.add('input-success');
@@ -83,15 +95,46 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   });
 })();
 
-/* ── 5. REAL-TIME INPUT VALIDATION ── */
+/* ── 5. REAL-TIME INPUT VALIDATION — no Sunday check ── */
 (function () {
   const rules = {
-    bkFullName: { el: document.getElementById('bkFullName'), errId: 'err-name',    test: (v) => v.trim().length >= 2,                                msg: 'Please enter your full name (min 2 characters).' },
-    bkEmail:    { el: document.getElementById('bkEmail'),    errId: 'err-email',   test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),         msg: 'Please enter a valid email address.' },
-    bkPhone:    { el: document.getElementById('bkPhone'),    errId: 'err-phone',   test: (v) => /^[\d\s\+\-\(\)]{7,15}$/.test(v.trim()),             msg: 'Please enter a valid phone number.' },
-    bkBranch:   { el: document.getElementById('bkBranch'),   errId: 'err-branch',  test: (v) => v !== '',                                             msg: 'Please select a branch.' },
-    bkDate:     { el: document.getElementById('bkDate'),     errId: 'err-date',    test: (v) => v !== '' && new Date(v + 'T00:00:00').getDay() !== 0,  msg: 'Please select a valid date (not Sunday).' },
-    bkService:  { el: document.getElementById('bkService'),  errId: 'err-service', test: (v) => v !== '',                                             msg: 'Please select a service.' },
+    bkFullName: {
+      el: document.getElementById('bkFullName'),
+      errId: 'err-name',
+      test: (v) => v.trim().length >= 2,
+      msg: 'Please enter your full name (min 2 characters).'
+    },
+    bkEmail: {
+      el: document.getElementById('bkEmail'),
+      errId: 'err-email',
+      test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+      msg: 'Please enter a valid email address.'
+    },
+    bkPhone: {
+      el: document.getElementById('bkPhone'),
+      errId: 'err-phone',
+      test: (v) => /^[\d\s\+\-\(\)]{7,15}$/.test(v.trim()),
+      msg: 'Please enter a valid phone number.'
+    },
+    bkBranch: {
+      el: document.getElementById('bkBranch'),
+      errId: 'err-branch',
+      test: (v) => v !== '',
+      msg: 'Please select a branch.'
+    },
+    bkDate: {
+      el: document.getElementById('bkDate'),
+      errId: 'err-date',
+      // FIXED: removed Sunday (getDay() !== 0) restriction — all days allowed
+      test: (v) => v !== '',
+      msg: 'Please select a preferred date.'
+    },
+    bkService: {
+      el: document.getElementById('bkService'),
+      errId: 'err-service',
+      test: (v) => v !== '',
+      msg: 'Please select a service.'
+    },
   };
 
   Object.values(rules).forEach(({ el, errId, test, msg }) => {
@@ -110,6 +153,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
     };
     el.addEventListener('blur', validate);
     el.addEventListener('input', () => { if (el.classList.contains('input-error')) validate(); });
+    el.addEventListener('change', validate);
   });
 
   window._bookRules = rules;
@@ -124,11 +168,11 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
 
   const branches = {
     porur: {
-      url:  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.2!2d80.2142!3d13.0878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526f5f8c6e0001%3A0x1!2sAnna+Nagar+Chennai!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin',
+      url:  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.2039095865844!2d80.14579580898435!3d13.022683100000052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5260f9a33f2071%3A0xfcd6391a8fe386c1!2sSmile%20Craft%20Dental%20Clinic!5e0!3m2!1sen!2sin!4v1771861939426!5m2!1sen!2sin',
       addr: 'G9/1 Ground Floor, SSL Green Park, Mugalivakkam Main Road, Porur, Chennai – 600125',
     },
     Kolapakkam: {
-      url:  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.9!2d80.2209!3d12.9788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525d2a9c83a5c5%3A0x1!2sVelachery+Chennai!5e0!3m2!1sen!2sin!4v1700000000001!5m2!1sen!2sin',
+      url:  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5095782345!2d80.21727517454627!3d12.978773013765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525d2f43b9ab31%3A0xd0bd7c89d7e7ba68!2sKolapakkam%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000002',
       addr: 'Plot no.C2 & C3, 1st Main Rd, Maxworth Nagar Phase II, Kolapakkam, Chennai – 600128',
     },
   };
@@ -141,6 +185,12 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   }
 
   tabs.forEach((tab) => tab.addEventListener('click', () => switchBranch(tab.dataset.branch)));
+
+  // Tap to activate map on touch
+  const mapWrap = document.querySelector('.map-wrap');
+  if (mapWrap) {
+    mapWrap.addEventListener('click', () => mapWrap.classList.add('is-active'));
+  }
 
   if (branchSelect) {
     branchSelect.addEventListener('change', () => {
@@ -180,11 +230,7 @@ async function submitToGoogleSheets(data) {
   });
 }
 
-/* ── 9. BOOKING PAGE FORM SUBMISSION ──────────────────────
-   FIX #7: submitBtn loading state is correctly cleaned up
-   BEFORE showing success (not after), so the button reset
-   is logically ordered even if the button becomes hidden.
-──────────────────────────────────────────────────────────── */
+/* ── 9. FORM SUBMISSION ── */
 (function () {
   const form      = document.getElementById('bookingForm');
   const success   = document.getElementById('bookSuccess');
@@ -197,7 +243,6 @@ async function submitToGoogleSheets(data) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Validate
     const rules = window._bookRules || {};
     let valid = true;
     Object.values(rules).forEach(({ el, errId, test, msg }) => {
@@ -229,7 +274,6 @@ async function submitToGoogleSheets(data) {
       console.warn('Sheets submission error (non-critical):', err);
     }
 
-    // FIX #7: reset button state BEFORE hiding the form
     submitBtn.classList.remove('loading');
     submitBtn.disabled = false;
 
@@ -286,10 +330,12 @@ function updateSteps(activeStep) {
 
 /* ── 11. HELPER FUNCTIONS ── */
 function showFieldError(errId, msg) {
-  const el = document.getElementById(errId); if (el) el.textContent = msg;
+  const el = document.getElementById(errId);
+  if (el) el.textContent = msg;
 }
 function clearFieldError(errId) {
-  const el = document.getElementById(errId); if (el) el.textContent = '';
+  const el = document.getElementById(errId);
+  if (el) el.textContent = '';
 }
 
 /* ── 12. INPUT FOCUS GLOW ── */

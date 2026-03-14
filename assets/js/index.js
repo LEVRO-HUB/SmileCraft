@@ -1,5 +1,5 @@
 /* ============================================================
-   SMILE CRAFT DENTAL — index.js  (v6 — Updated)
+   SMILE CRAFT DENTAL — index.js  (v7 — Fixed)
    ============================================================ */
 
 'use strict';
@@ -103,23 +103,55 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ══════════════════════════════════════════════════════
-     3. DESKTOP NAV DROPDOWN
+     3. DESKTOP NAV DROPDOWN — FIXED
+     Previously only toggled on click; now also closes on
+     outside-click and works reliably on desktop.
   ══════════════════════════════════════════════════════ */
-  document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-    const trigger = dropdown.querySelector('.nav-dropdown-trigger');
-    if (!trigger) return;
-    trigger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = dropdown.classList.toggle('is-active');
-      trigger.setAttribute('aria-expanded', String(isOpen));
-    });
-  });
-  document.addEventListener('click', () => {
+  function closeAllDropdowns() {
     document.querySelectorAll('.nav-dropdown.is-active').forEach(d => {
       d.classList.remove('is-active');
       const t = d.querySelector('.nav-dropdown-trigger');
       if (t) t.setAttribute('aria-expanded', 'false');
     });
+  }
+
+  document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+    const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+    if (!trigger) return;
+
+    // Toggle on click
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.contains('is-active');
+      closeAllDropdowns();
+      if (!isOpen) {
+        dropdown.classList.add('is-active');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Also open on mouseenter for desktop UX
+    dropdown.addEventListener('mouseenter', () => {
+      if (window.innerWidth >= 1024) {
+        closeAllDropdowns();
+        dropdown.classList.add('is-active');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+    dropdown.addEventListener('mouseleave', () => {
+      if (window.innerWidth >= 1024) {
+        dropdown.classList.remove('is-active');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', closeAllDropdowns);
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAllDropdowns();
   });
 
   /* ══════════════════════════════════════════════════════
@@ -142,9 +174,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ══════════════════════════════════════════════════════
      5. BOOKING POPUP
-     - Opens automatically after 3 seconds (once per session)
-     - Navbar "Book an Appointment" button links directly to book.html
-     - All other "Book" links on the page open the popup
+     - Opens automatically after 6 seconds
+     - Navbar CTA links directly to book.html
+     - All other "Book" links open the popup
   ══════════════════════════════════════════════════════ */
   const popup     = document.getElementById('bookPopup');
   const bkClose   = document.getElementById('bkClose');
@@ -163,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   }
 
-  // Auto-show after 3 seconds — every page load (no session guard)
+  // Auto-show after 6 seconds
   if (popup) {
     setTimeout(openPopup, 6000);
   }
@@ -174,11 +206,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
-  // Intercept book.html links to open popup — EXCEPT the navbar header CTA
-  // and the mobile nav CTA (those navigate directly to book.html)
+  // Intercept book.html links to open popup — EXCEPT the navbar header CTA and mobile nav CTA
   if (document.body.dataset.page === 'home') {
     document.querySelectorAll('a[href="book.html"]').forEach(link => {
-      // Skip the header nav CTA and mobile nav CTA — let them navigate normally
       if (link.id === 'headerBookBtn' || link.classList.contains('pmn-cta')) return;
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -201,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ── Date field min = today ── */
+  /* ── Date field: min = today + open picker on click anywhere in field — FIXED ── */
   const dateEl = document.getElementById('bkPopupDate');
   if (dateEl) {
     const today = new Date();
@@ -209,6 +239,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const mm    = String(today.getMonth() + 1).padStart(2, '0');
     const dd    = String(today.getDate()).padStart(2, '0');
     dateEl.min  = `${yyyy}-${mm}-${dd}`;
+
+    // Open native date picker when clicking anywhere in the input field
+    dateEl.addEventListener('click', function (e) {
+      try {
+        this.showPicker();
+      } catch (err) {
+        // Fallback: focus the input (browser may show picker automatically)
+        this.focus();
+      }
+    });
+
+    // Also open on focus for keyboard users
+    dateEl.addEventListener('focus', function () {
+      try {
+        this.showPicker();
+      } catch (err) {
+        // ignore
+      }
+    });
   }
 
   /* ── Collect and submit form ── */
@@ -363,5 +412,10 @@ document.addEventListener('DOMContentLoaded', function () {
       breakpoints: { 767: { slidesPerView: 3 } }
     });
   }
+
+  /* ══════════════════════════════════════════════════════
+     11. WHATSAPP FLOAT BUTTON — always visible, no scroll trigger needed
+  ══════════════════════════════════════════════════════ */
+  // Button is always visible via CSS — no JS needed
 
 }); // end DOMContentLoaded
