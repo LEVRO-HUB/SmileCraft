@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Auto-show after 3 seconds — every page load (no session guard)
   if (popup) {
-    setTimeout(openPopup, 3000);
+    setTimeout(openPopup, 6000);
   }
 
   if (bkClose) bkClose.addEventListener('click', closePopup);
