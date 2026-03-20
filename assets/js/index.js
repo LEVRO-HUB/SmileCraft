@@ -13,17 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
   ══════════════════════════════════════════════════════ */
   (function initIntroSlideshow() {
     const DURATION = 6500;
-    const TOTAL    = 2;
+    const TOTAL = 2;
 
     const docData = [
-      { name: 'Dr. Rishikumar A',    role: 'Orthodontist · Both Branches',   yrs: '11+' },
+      { name: 'Dr. Rishikumar A', role: 'Orthodontist · Both Branches', yrs: '11+' },
       { name: 'Dr. Rupha Lakshmi U', role: 'Dental Surgeon · Both Branches', yrs: '11+' }
     ];
 
     let current = 0;
-    let startTs  = null;
-    let rafId    = null;
-    let paused   = false;
+    let startTs = null;
+    let rafId = null;
+    let paused = false;
 
     function switchDoc(idx) {
       current = ((idx % TOTAL) + TOTAL) % TOTAL;
@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const d = docData[current];
       const nameEl = document.getElementById('sc-card-name');
       const roleEl = document.getElementById('sc-card-role');
-      const yrsEl  = document.getElementById('sc-card-yrs');
+      const yrsEl = document.getElementById('sc-card-yrs');
       if (nameEl) nameEl.textContent = d.name;
       if (roleEl) roleEl.textContent = d.role;
-      if (yrsEl)  yrsEl.textContent  = d.yrs;
+      if (yrsEl) yrsEl.textContent = d.yrs;
     }
 
     function startTick() {
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
       function tick(ts) {
         if (!startTs) startTs = ts;
         const elapsed = ts - startTs;
-        const pct     = Math.min((elapsed / DURATION) * 100, 100);
+        const pct = Math.min((elapsed / DURATION) * 100, 100);
 
         const fill = document.getElementById('sc-fill-' + current);
         if (fill) fill.style.width = pct + '%';
@@ -178,9 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
      - Navbar CTA links directly to book.html
      - All other "Book" links open the popup
   ══════════════════════════════════════════════════════ */
-  const popup     = document.getElementById('bookPopup');
-  const bkClose   = document.getElementById('bkClose');
-  const bkForm    = document.getElementById('bkForm');
+  const popup = document.getElementById('bookPopup');
+  const bkClose = document.getElementById('bkClose');
+  const bkForm = document.getElementById('bkForm');
   const bkSuccess = document.getElementById('bkSuccess');
 
   function openPopup() {
@@ -235,10 +235,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const dateEl = document.getElementById('bkPopupDate');
   if (dateEl) {
     const today = new Date();
-    const yyyy  = today.getFullYear();
-    const mm    = String(today.getMonth() + 1).padStart(2, '0');
-    const dd    = String(today.getDate()).padStart(2, '0');
-    dateEl.min  = `${yyyy}-${mm}-${dd}`;
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dateEl.min = `${yyyy}-${mm}-${dd}`;
 
     // Open native date picker when clicking anywhere in the input field
     dateEl.addEventListener('click', function (e) {
@@ -262,20 +262,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Collect and submit form ── */
   function collectPopupData() {
-    const ref      = 'SC-' + Math.floor(100000 + Math.random() * 900000);
-    const nameEl   = document.getElementById('bkPopupName');
-    const phoneEl  = document.getElementById('bkPopupPhone');
+    const ref = 'SC-' + Math.floor(100000 + Math.random() * 900000);
+    const nameEl = document.getElementById('bkPopupName');
+    const phoneEl = document.getElementById('bkPopupPhone');
     const branchEl = document.getElementById('bkPopupBranch');
-    const dateEl2  = document.getElementById('bkPopupDate');
+    const dateEl2 = document.getElementById('bkPopupDate');
     return {
       ref,
-      source:   'homepage-popup',
-      fullName: nameEl   ? nameEl.value.trim()  : '',
-      email:    '',
-      phone:    phoneEl  ? phoneEl.value.trim() : '',
-      age:      '',
-      branch:   branchEl ? branchEl.value        : '',
-      date:     dateEl2  ? dateEl2.value         : '',
+      source: 'homepage-popup',
+      fullName: nameEl ? nameEl.value.trim() : '',
+      email: '',
+      phone: phoneEl ? phoneEl.value.trim() : '',
+      age: '',
+      branch: branchEl ? branchEl.value : '',
+      date: dateEl2 ? dateEl2.value : '',
       timeSlot: '', service: '', insurance: '',
       emi: false, whatsapp: false, notes: '',
     };
@@ -329,17 +329,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const statNums = document.querySelectorAll('.stat-num');
 
   function animateCounter(el) {
-    const target        = el.getAttribute('data-target');
-    const suffix        = el.getAttribute('data-suffix') || '';
+    const target = el.getAttribute('data-target');
+    const suffix = el.getAttribute('data-suffix') || '';
     const numericTarget = parseFloat(target);
-    const duration      = 1800;
-    const startTime     = performance.now();
+    const duration = 1800;
+    const startTime = performance.now();
 
     function step(now) {
-      const elapsed  = now - startTime;
+      const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3);
-      const val      = eased * numericTarget;
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = eased * numericTarget;
       el.textContent = (numericTarget % 1 === 0)
         ? Math.floor(val) + suffix
         : val.toFixed(1) + suffix;
@@ -419,11 +419,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const waBtn = document.getElementById('waFloatBtn');
   if (waBtn) {
     const originalHref = waBtn.getAttribute('href') || '';
-    
+
     // Create popup container
     const waPopup = document.createElement('div');
     waPopup.style.cssText = 'display:none; position:fixed; background:#fff; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); padding:8px 0; z-index:99999; min-width:140px; flex-direction:column; overflow:hidden; font-family:inherit;';
-    
+
     // Option generator
     function createOption(name, phoneCode) {
       const opt = document.createElement('a');
