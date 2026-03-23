@@ -314,12 +314,20 @@ a.btn, button.btn { min-height: unset; }
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   min-width: 200px;
-  overflow: hidden;
+  overflow: visible;
   z-index: 300;
   /* Smooth appear */
   opacity: 0;
   transform: translateY(-6px);
   transition: opacity 0.22s ease, transform 0.22s ease;
+}
+/* Invisible bridge to cover the gap between trigger and menu */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -18px; left: 0;
+  width: 100%; height: 18px;
+  background: transparent;
 }
 .nav-dropdown:hover .dropdown-menu,
 .nav-dropdown.is-active .dropdown-menu {
