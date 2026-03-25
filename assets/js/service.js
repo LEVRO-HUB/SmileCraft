@@ -133,21 +133,42 @@ document.addEventListener('DOMContentLoaded', function () {
   })();
 
   /* ──────────────────────────────────────────────
-     4b. BEFORE & AFTER SCROLL ARROWS
+     4b. BEFORE & AFTER SCROLL ARROWS (Multi-Gallery)
   ────────────────────────────────────────────── */
   (function () {
-    var grid  = document.getElementById('baGrid');
-    var left  = document.getElementById('baScrollLeft');
-    var right = document.getElementById('baScrollRight');
-    if (!grid || !left || !right) return;
+    const containers = document.querySelectorAll('.ba-gallery-container');
+    containers.forEach(container => {
+      const grid = container.querySelector('.ba-grid');
+      const prev = container.querySelector('.ba-prev');
+      const next = container.querySelector('.ba-next');
+      if (!grid || !prev || !next) return;
 
-    function scrollAmount() {
-      var card = grid.querySelector('.ba-card');
-      return card ? card.offsetWidth + 24 : 320;
-    }
+      function getStep() {
+        const card = grid.querySelector('.ba-card');
+        return card ? card.offsetWidth + 24 : 320;
+      }
 
-    left.addEventListener('click', function ()  { grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }); });
-    right.addEventListener('click', function () { grid.scrollBy({ left:  scrollAmount(), behavior: 'smooth' }); });
+      prev.addEventListener('click', () => {
+        grid.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      });
+      next.addEventListener('click', () => {
+        grid.scrollBy({ left: getStep(), behavior: 'smooth' });
+      });
+
+      // Show/Hide buttons based on scroll position
+      const updateBtns = () => {
+        const left = grid.scrollLeft;
+        const max  = grid.scrollWidth - grid.clientWidth;
+        prev.style.opacity = left <= 10 ? '0.3' : '1';
+        prev.style.pointerEvents = left <= 10 ? 'none' : 'auto';
+        next.style.opacity = left >= max - 10 ? '0.3' : '1';
+        next.style.pointerEvents = left >= max - 10 ? 'none' : 'auto';
+      };
+
+      grid.addEventListener('scroll', updateBtns, { passive: true });
+      window.addEventListener('resize', updateBtns, { passive: true });
+      updateBtns();
+    });
   })();
 
   /* ──────────────────────────────────────────────
