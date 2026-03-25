@@ -249,21 +249,28 @@
 
         <!-- Quick contact buttons -->
         <div class="contact-hero-actions reveal reveal-d1">
-          <a href="tel:+918825745091" class="quick-contact-btn">
+          <!-- ✅ FIXED: Changed to <div class="quick-contact-btn"> so each branch can have its own clickable link -->
+          <div class="quick-contact-btn">
             <div class="quick-contact-icon quick-contact-icon--mint"><span class="material-icons">phone</span></div>
             <div>
               <div class="quick-contact-label">Call Us Now</div>
-              <div class="quick-contact-val">+91 8825745091</div>
-              <div class="quick-contact-val">+91 6382473705</div>
+              <!-- Porur Branch -->
+              <a href="tel:+918825745091" class="quick-contact-val" style="display:block; text-decoration:none; margin-bottom: 2px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color=''">Kolapakkam: +91 8825745091</a>
+              <!-- Kolapakkam Branch -->
+              <a href="tel:+916382473705" class="quick-contact-val" style="display:block; text-decoration:none;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color=''">Porur: +91 6382473705</a>
             </div>
-          </a>
-          <a href="https://wa.me/918825745091" target="_blank" rel="noopener" class="quick-contact-btn">
+          </div>
+          <!-- ✅ FIXED: Changed WhatsApp block as well to offer options for both branches -->
+          <div class="quick-contact-btn">
             <div class="quick-contact-icon quick-contact-icon--green"><span class="material-icons">chat</span></div>
             <div>
               <div class="quick-contact-label">WhatsApp</div>
-              <div class="quick-contact-val">Chat with us instantly</div>
+              <!-- Porur Branch -->
+              <a href="https://wa.me/918825745091" target="_blank" rel="noopener" class="quick-contact-val" style="display:block; text-decoration:none; margin-bottom: 2px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color=''">Kolapakkam Branch</a>
+              <!-- Kolapakkam Branch -->
+              <a href="https://wa.me/916382473705" target="_blank" rel="noopener" class="quick-contact-val" style="display:block; text-decoration:none;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color=''">Porur Branch</a>
             </div>
-          </a>
+          </div>
           <a href="mailto:smilecraft.rishi.rupha@gmail.com" class="quick-contact-btn">
             <div class="quick-contact-icon quick-contact-icon--blue"><span class="material-icons">alternate_email</span>
             </div>
