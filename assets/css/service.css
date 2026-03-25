@@ -1670,6 +1670,36 @@ select {
   background: var(--primary);
 }
 
+/* Modifier for composite images to extract Top(Before) and Bottom(After) */
+.ba-slider.ba-composite {
+  height: auto !important;
+  /* 2/1 ratio precisely frames the half-marks of a 1080x1080 stack, or framing correctly the 3-stack ends */
+  aspect-ratio: var(--aspect, 2/1);
+}
+
+.ba-slider.ba-composite .ba-after,
+.ba-slider.ba-composite .ba-before {
+  overflow: hidden;
+}
+
+.ba-slider.ba-composite .ba-before img,
+.ba-slider.ba-composite .ba-after img {
+  position: absolute !important;
+  height: auto !important;
+  object-fit: fill !important;
+}
+
+.ba-slider.ba-composite .ba-before img {
+  top: var(--crop-before, 0%) !important;
+  bottom: auto !important;
+}
+
+.ba-slider.ba-composite .ba-after img {
+  top: auto !important;
+  bottom: var(--crop-after, 0%) !important;
+  width: 100% !important;
+}
+
 .ba-handle {
   position: absolute;
   top: 0;
