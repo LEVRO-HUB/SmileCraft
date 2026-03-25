@@ -133,6 +133,24 @@ document.addEventListener('DOMContentLoaded', function () {
   })();
 
   /* ──────────────────────────────────────────────
+     4b. BEFORE & AFTER SCROLL ARROWS
+  ────────────────────────────────────────────── */
+  (function () {
+    var grid  = document.getElementById('baGrid');
+    var left  = document.getElementById('baScrollLeft');
+    var right = document.getElementById('baScrollRight');
+    if (!grid || !left || !right) return;
+
+    function scrollAmount() {
+      var card = grid.querySelector('.ba-card');
+      return card ? card.offsetWidth + 24 : 320;
+    }
+
+    left.addEventListener('click', function ()  { grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }); });
+    right.addEventListener('click', function () { grid.scrollBy({ left:  scrollAmount(), behavior: 'smooth' }); });
+  })();
+
+  /* ──────────────────────────────────────────────
      5. FAQ ACCORDION
   ────────────────────────────────────────────── */
   const faqItems = document.querySelectorAll('.faq-item');
