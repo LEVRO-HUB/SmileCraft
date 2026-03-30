@@ -223,6 +223,19 @@ document.addEventListener('DOMContentLoaded', function () {
     el.classList.add('selected');
     const inp = document.getElementById('bkPopupBranch');
     if (inp) inp.value = value;
+    // Clear branch error on selection
+    bkClearError('bkErrBranch', '.bk-branch-grid');
+  };
+
+  /* ── Time slot visual selector ── */
+  window.bkSelectTime = function (value, el) {
+    if (el.style.pointerEvents === 'none') return;
+    const grid = document.getElementById('bkTimeGrid');
+    if (grid) grid.querySelectorAll('.bk-branch-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    const inp = document.getElementById('bkPopupTime');
+    if (inp) inp.value = value;
+    bkClearError('bkErrTime', '#bkTimeGrid');
   };
 
   document.querySelectorAll('.bk-branch-card').forEach(card => {
@@ -233,6 +246,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Date field: min = today + open picker on click anywhere in field — FIXED ── */
   const dateEl = document.getElementById('bkPopupDate');
+  const bkEveningSlot = document.getElementById('bkSlotEvening');
+  const bkSundayNote = document.getElementById('bkPopupSundayNote');
+  const bkWeekdayNote = document.getElementById('bkPopupWeekdayNote');
+
+  function bkUpdateTimeSlots() {
+    if (!dateEl || !dateEl.value) {
+      bkEnableEveningSlot();
+      return;
+    }
+    const selectedDate = new Date(dateEl.value + 'T00:00:00');
+    if (selectedDate.getDay() === 0) {
+      bkDisableEveningSlot();
+    } else {
+      bkEnableEveningSlot();
+    }
+  }
+
+  function bkDisableEveningSlot() {
+    if (!bkEveningSlot) return;
+    bkEveningSlot.style.opacity = '0.4';
+    bkEveningSlot.style.pointerEvents = 'none';
+    bkEveningSlot.style.cursor = 'not-allowed';
+    bkEveningSlot.classList.remove('selected');
+    const inp = document.getElementById('bkPopupTime');
+    if (inp && inp.value === 'evening') inp.value = '';
+    if (bkSundayNote) bkSundayNote.style.display = 'block';
+    if (bkWeekdayNote) bkWeekdayNote.style.display = 'none';
+  }
+
+  function bkEnableEveningSlot() {
+    if (!bkEveningSlot) return;
+    bkEveningSlot.style.opacity = '';
+    bkEveningSlot.style.pointerEvents = '';
+    bkEveningSlot.style.cursor = '';
+    if (bkSundayNote) bkSundayNote.style.display = 'none';
+    if (bkWeekdayNote) bkWeekdayNote.style.display = 'block';
+  }
+
   if (dateEl) {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -245,19 +296,127 @@ document.addEventListener('DOMContentLoaded', function () {
       try {
         this.showPicker();
       } catch (err) {
-        // Fallback: focus the input (browser may show picker automatically)
         this.focus();
       }
     });
 
-    // Also open on focus for keyboard users
     dateEl.addEventListener('focus', function () {
       try {
         this.showPicker();
-      } catch (err) {
-        // ignore
+      } catch (err) { /* ignore */ }
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     FORM VALIDATION HELPERS
+  ══════════════════════════════════════════════════════ */
+  function bkShowError(errId, msg, inputEl) {
+    const errSpan = document.getElementById(errId);
+    if (errSpan) errSpan.textContent = msg;
+    if (inputEl) inputEl.classList.add('bk-input--error');
+  }
+
+  function bkClearError(errId, gridSelector) {
+    const errSpan = document.getElementById(errId);
+    if (errSpan) errSpan.textContent = '';
+    if (gridSelector) {
+      const grid = document.querySelector(gridSelector);
+      if (grid) grid.classList.remove('bk-branch-grid--error');
+    }
+  }
+
+  // Clear errors on input in real time
+  const nameInput = document.getElementById('bkPopupName');
+  const phoneInput = document.getElementById('bkPopupPhone');
+
+  if (nameInput) {
+    nameInput.addEventListener('input', function () {
+      if (this.value.trim()) {
+        this.classList.remove('bk-input--error');
+        bkClearError('bkErrName');
       }
     });
+  }
+
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function () {
+      if (this.value.trim()) {
+        this.classList.remove('bk-input--error');
+        bkClearError('bkErrPhone');
+      }
+    });
+  }
+
+  if (dateEl) {
+    dateEl.addEventListener('change', function () {
+      if (this.value) {
+        this.classList.remove('bk-input--error');
+        bkClearError('bkErrDate');
+      }
+      bkUpdateTimeSlots();
+    });
+  }
+
+  /* ── Validate all fields — returns true if valid ── */
+  function bkValidateForm() {
+    let isValid = true;
+    const name = document.getElementById('bkPopupName');
+    const phone = document.getElementById('bkPopupPhone');
+    const branch = document.getElementById('bkPopupBranch');
+    const date = document.getElementById('bkPopupDate');
+    const time = document.getElementById('bkPopupTime');
+
+    // Name
+    if (!name || !name.value.trim()) {
+      bkShowError('bkErrName', 'Please enter your full name', name);
+      isValid = false;
+    } else {
+      name.classList.remove('bk-input--error');
+      bkClearError('bkErrName');
+    }
+
+    // Phone — must be 10 digits (Indian mobile)
+    if (!phone || !phone.value.trim()) {
+      bkShowError('bkErrPhone', 'Please enter your phone number', phone);
+      isValid = false;
+    } else if (!/^[6-9]\d{9}$/.test(phone.value.trim().replace(/[\s\-+]/g, '').replace(/^91/, ''))) {
+      bkShowError('bkErrPhone', 'Please enter a valid 10-digit phone number', phone);
+      isValid = false;
+    } else {
+      phone.classList.remove('bk-input--error');
+      bkClearError('bkErrPhone');
+    }
+
+    // Branch
+    if (!branch || !branch.value) {
+      bkShowError('bkErrBranch', 'Please select a branch');
+      const grid = document.querySelector('.bk-branch-grid');
+      if (grid) grid.classList.add('bk-branch-grid--error');
+      isValid = false;
+    } else {
+      bkClearError('bkErrBranch', '.bk-branch-grid');
+    }
+
+    // Date
+    if (!date || !date.value) {
+      bkShowError('bkErrDate', 'Please select an appointment date', date);
+      isValid = false;
+    } else {
+      date.classList.remove('bk-input--error');
+      bkClearError('bkErrDate');
+    }
+
+    // Time
+    if (!time || !time.value) {
+      bkShowError('bkErrTime', 'Please select a time slot');
+      const timeGrid = document.getElementById('bkTimeGrid');
+      if (timeGrid) timeGrid.classList.add('bk-branch-grid--error');
+      isValid = false;
+    } else {
+      bkClearError('bkErrTime', '#bkTimeGrid');
+    }
+
+    return isValid;
   }
 
   /* ── Collect and submit form ── */
@@ -267,6 +426,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const phoneEl = document.getElementById('bkPopupPhone');
     const branchEl = document.getElementById('bkPopupBranch');
     const dateEl2 = document.getElementById('bkPopupDate');
+    const timeEl = document.getElementById('bkPopupTime');
     return {
       ref,
       source: 'homepage-popup',
@@ -276,14 +436,40 @@ document.addEventListener('DOMContentLoaded', function () {
       age: '',
       branch: branchEl ? branchEl.value : '',
       date: dateEl2 ? dateEl2.value : '',
-      timeSlot: '', service: '', insurance: '',
+      timeSlot: timeEl ? timeEl.value : '', service: '', insurance: '',
       emi: false, whatsapp: false, notes: '',
     };
+  }
+
+  function bkResetForm() {
+    if (bkForm) bkForm.reset();
+    const submitBtn = document.getElementById('bkSubmitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span class="material-icons" style="font-size:1rem!important">check_circle</span> Confirm Appointment';
+    }
+    document.querySelectorAll('.bk-branch-card').forEach(c => c.classList.remove('selected'));
+    const bi = document.getElementById('bkPopupBranch');
+    if (bi) bi.value = '';
+    const ti = document.getElementById('bkPopupTime');
+    if (ti) ti.value = '';
+    // Clear all error states
+    ['bkErrName', 'bkErrPhone', 'bkErrBranch', 'bkErrDate', 'bkErrTime'].forEach(id => bkClearError(id));
+    const grid = document.querySelector('.bk-branch-grid');
+    if (grid) grid.classList.remove('bk-branch-grid--error');
+    const timeGrid = document.getElementById('bkTimeGrid');
+    if (timeGrid) timeGrid.classList.remove('bk-branch-grid--error');
+    document.querySelectorAll('.bk-input--error').forEach(el => el.classList.remove('bk-input--error'));
+    bkUpdateTimeSlots(); // Reset evening slot availability based on cleared date
   }
 
   if (bkForm && bkSuccess) {
     bkForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+
+      // Validate first — block submission if invalid
+      if (!bkValidateForm()) return;
+
       const submitBtn = document.getElementById('bkSubmitBtn');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
 
@@ -304,14 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(() => {
         bkForm.classList.remove('is-hidden');
         bkSuccess.classList.remove('is-shown');
-        bkForm.reset();
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<span class="material-icons" style="font-size:1rem!important">check_circle</span> Confirm Appointment';
-        }
-        document.querySelectorAll('.bk-branch-card').forEach(c => c.classList.remove('selected'));
-        const bi = document.getElementById('bkPopupBranch');
-        if (bi) bi.value = '';
+        bkResetForm();
       }, 4200);
     });
   }

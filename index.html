@@ -304,9 +304,9 @@
             with modern technology and experienced specialists across our two convenient Chennai locations.</p>
           <div class="hero-btns reveal reveal-d2">
             <a href="book.html" class="btn btn-mint">Take an Appointment</a>
-            <a href="tel:+918825745091" class="btn btn-outline">
+            <button type="button" class="btn btn-outline" onclick="openCallModal()" aria-label="Call a branch">
               <span class="material-icons" style="font-size:1rem!important">phone</span>Call Now
-            </a>
+            </button>
           </div>
           <div class="reveal reveal-d2"
             style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem;margin-bottom:.5rem;">
@@ -925,10 +925,7 @@
     </div>
   </footer>
 
-  <a href="https://wa.me/918825745091?text=Hi%20Smile%20Craft%2C%20I%27d%20like%20to%20book%20a%20consultation"
-    class="wa-float" id="waFloatBtn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <span class="material-icons">chat</span>
-  </a>
+
 
   <!-- BOOKING POPUP -->
   <div class="bk-overlay" id="bookPopup" role="dialog" aria-modal="true" aria-labelledby="bkTitle">
@@ -946,11 +943,13 @@
             <span class="material-icons bk-field-icon">person</span>
             <input class="bk-input" id="bkPopupName" type="text" placeholder="Full Name" required autocomplete="name" />
           </div>
+          <span class="bk-err" id="bkErrName"></span>
           <div class="bk-field">
             <span class="material-icons bk-field-icon">phone</span>
             <input class="bk-input" id="bkPopupPhone" type="tel" placeholder="Phone Number" required
               autocomplete="tel" />
           </div>
+          <span class="bk-err" id="bkErrPhone"></span>
           <div>
             <span class="bk-label">Choose a Branch</span>
             <div class="bk-branch-grid">
@@ -958,20 +957,43 @@
                 role="button" tabindex="0">
                 <span class="material-icons bk-branch-icon">location_city</span>
                 <div class="bk-branch-name">Porur</div>
-                <div class="bk-branch-hours">Mon–Sat 9 AM – 1 PM, 5 PM – 9 PM · Sun 9 AM – 1 PM (By Appointment)</div>
+                <div class="bk-branch-hours">Mon–Sat 9:00am–1:00pm &amp; 5:00pm–9:00pm<br>Sun 9:00am–1:00pm (By appointment)</div>
               </div>
               <div class="bk-branch-card" id="bkBranchKolap" onclick="bkSelectBranch('Kolapakkam Branch', this)"
                 role="button" tabindex="0">
                 <span class="material-icons bk-branch-icon">location_city</span>
                 <div class="bk-branch-name">Kolapakkam</div>
-                <div class="bk-branch-hours">Mon–Sat 9 AM – 1 PM, 5 PM – 9 PM · Sun 9 AM – 1 PM (By Appointment)</div>
+                <div class="bk-branch-hours">Mon–Sat 9:00am–1:00pm &amp; 5:00pm–9:00pm<br>Sun 9:00am–1:00pm (By appointment)</div>
               </div>
             </div>
             <input type="hidden" id="bkPopupBranch" required />
+            <span class="bk-err" id="bkErrBranch"></span>
           </div>
           <div class="bk-field">
             <span class="material-icons bk-field-icon">event</span>
             <input class="bk-input" id="bkPopupDate" type="date" required />
+          </div>
+          <span class="bk-err" id="bkErrDate"></span>
+          <div>
+            <span class="bk-label">Preferred Time Slot</span>
+            <div class="bk-branch-grid" id="bkTimeGrid">
+              <div class="bk-branch-card" id="bkSlotMorning" onclick="bkSelectTime('morning', this)"
+                role="button" tabindex="0">
+                <span class="material-icons bk-branch-icon">wb_sunny</span>
+                <div class="bk-branch-name">Morning</div>
+                <div class="bk-branch-hours">9:00 AM – 1:00 PM</div>
+              </div>
+              <div class="bk-branch-card" id="bkSlotEvening" onclick="bkSelectTime('evening', this)"
+                role="button" tabindex="0">
+                <span class="material-icons bk-branch-icon">nights_stay</span>
+                <div class="bk-branch-name">Evening</div>
+                <div class="bk-branch-hours">5:00 PM – 9:00 PM</div>
+              </div>
+            </div>
+            <input type="hidden" id="bkPopupTime" required />
+            <span class="bk-err" id="bkErrTime"></span>
+            <small id="bkPopupSundayNote" style="display:none;margin-top:6px;color:rgba(255, 255, 255, 0.7);font-size:0.75rem;">Sunday appointments are available only from 9:00 AM to 1:00 PM</small>
+            <small id="bkPopupWeekdayNote" style="display:block;margin-top:6px;color:rgba(255, 255, 255, 0.7);font-size:0.75rem;">Sun: 9:00 AM – 1:00 PM (By appointment only)</small>
           </div>
           <button type="submit" class="bk-submit" id="bkSubmitBtn">
             <span class="material-icons" style="font-size:1rem!important">check_circle</span>
@@ -1038,6 +1060,35 @@
   <script src="assets/js/index.js"></script>
   <script src="assets/js/premium-mobile-nav.js"></script>
   <script src="assets/js/float-contact.js"></script>
+
+  <!-- CALL BRANCH MODAL -->
+  <div id="callBranchModal" onclick="if(event.target===this)closeCallModal()" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(5px);">
+    <div style="background:#080f2e;border:1px solid rgba(199,208,248,0.15);border-radius:20px;padding:1.5rem;width:min(310px,88vw);box-shadow:0 24px 60px rgba(0,0,0,0.65);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(199,208,248,0.45);padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:0.75rem;">Select a Branch to Call</div>
+      <a href="tel:+918825745091" style="display:flex;align-items:center;gap:0.65rem;padding:0.8rem 0.9rem;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);text-decoration:none;margin-bottom:0.5rem;transition:background 0.2s;" onmouseenter="this.style.background='rgba(199,208,248,0.1)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
+        <span class="material-icons" style="color:rgba(199,208,248,0.5);font-size:1rem!important;">location_on</span>
+        <div style="flex:1;">
+          <strong style="color:#fff;font-size:0.9rem;display:block;">Porur Branch</strong>
+          <span style="color:rgba(199,208,248,0.5);font-size:0.75rem;">+91 88257 45091</span>
+        </div>
+        <span class="material-icons" style="color:rgba(199,208,248,0.5);font-size:1.1rem!important;">call</span>
+      </a>
+      <a href="tel:+916382473705" style="display:flex;align-items:center;gap:0.65rem;padding:0.8rem 0.9rem;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);text-decoration:none;transition:background 0.2s;" onmouseenter="this.style.background='rgba(199,208,248,0.1)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
+        <span class="material-icons" style="color:rgba(199,208,248,0.5);font-size:1rem!important;">location_on</span>
+        <div style="flex:1;">
+          <strong style="color:#fff;font-size:0.9rem;display:block;">Kolapakkam Branch</strong>
+          <span style="color:rgba(199,208,248,0.5);font-size:0.75rem;">+91 63824 73705</span>
+        </div>
+        <span class="material-icons" style="color:rgba(199,208,248,0.5);font-size:1.1rem!important;">call</span>
+      </a>
+      <button onclick="closeCallModal()" style="display:block;width:100%;margin-top:0.75rem;padding:0.55rem;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:transparent;color:rgba(199,208,248,0.5);cursor:pointer;font-size:0.82rem;font-family:inherit;">Cancel</button>
+    </div>
+  </div>
+  <script>
+    function openCallModal() { document.getElementById('callBranchModal').style.display = 'flex'; }
+    function closeCallModal() { document.getElementById('callBranchModal').style.display = 'none'; }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCallModal(); });
+  </script>
 
 </body>
 
