@@ -126,17 +126,59 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   });
 })();
 
-/* ── 9. MIN DATE — today, skip Sundays ── */
+/* ── 9. MIN DATE + SUNDAY EVENING SLOT LOGIC ── */
 (function () {
-  const dateInput = document.getElementById('cpDate');
+  const dateInput   = document.getElementById('cpDate');
+  const eveningSlot = document.getElementById('cpEveningSlot');
+  const sundayNote  = document.getElementById('cpSundayNote');
+  const weekdayNote = document.getElementById('cpWeekdayNote');
   if (!dateInput) return;
+
   const pad   = (n) => String(n).padStart(2, '0');
   const today = new Date();
-  if (today.getDay() === 0) today.setDate(today.getDate() + 1);
   dateInput.min = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
   const max = new Date();
   max.setMonth(max.getMonth() + 3);
   dateInput.max = `${max.getFullYear()}-${pad(max.getMonth() + 1)}-${pad(max.getDate())}`;
+
+  function updateTimeSlotsForDate() {
+    if (!dateInput.value) {
+      enableEveningSlot();
+      return;
+    }
+    const selectedDate = new Date(dateInput.value + 'T00:00:00');
+    const isSunday = selectedDate.getDay() === 0;
+    if (isSunday) {
+      disableEveningSlot();
+    } else {
+      enableEveningSlot();
+    }
+  }
+
+  function disableEveningSlot() {
+    if (!eveningSlot) return;
+    const eveningRadio = eveningSlot.querySelector('input[type="radio"]');
+    if (eveningRadio && eveningRadio.checked) eveningRadio.checked = false;
+    if (eveningRadio) eveningRadio.disabled = true;
+    eveningSlot.style.opacity = '0.4';
+    eveningSlot.style.pointerEvents = 'none';
+    eveningSlot.style.cursor = 'not-allowed';
+    if (sundayNote) sundayNote.style.display = 'block';
+    if (weekdayNote) weekdayNote.style.display = 'none';
+  }
+
+  function enableEveningSlot() {
+    if (!eveningSlot) return;
+    const eveningRadio = eveningSlot.querySelector('input[type="radio"]');
+    if (eveningRadio) eveningRadio.disabled = false;
+    eveningSlot.style.opacity = '';
+    eveningSlot.style.pointerEvents = '';
+    eveningSlot.style.cursor = '';
+    if (sundayNote) sundayNote.style.display = 'none';
+    if (weekdayNote) weekdayNote.style.display = 'block';
+  }
+
+  dateInput.addEventListener('change', updateTimeSlotsForDate);
 })();
 
 /* ── 10. REAL-TIME FORM VALIDATION ── */

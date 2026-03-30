@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="assets/images/logo.png" />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png?v=2" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Smile Craft Dental Clinic | Porur &amp; Kolapakkam, Chennai</title>
   <meta name="description"
@@ -547,18 +547,15 @@
                 <div class="time-slots">
                   <label class="time-slot">
                     <input type="radio" name="time" value="morning" />
-                    <span><span class="material-icons">wb_sunny</span>Morning<br /><small>8 AM – 12 PM</small></span>
+                    <span><span class="material-icons">wb_sunny</span>Morning<br /><small>9:00 AM – 1:00 PM</small></span>
                   </label>
-                  <label class="time-slot">
-                    <input type="radio" name="time" value="afternoon" />
-                    <span><span class="material-icons">light_mode</span>Afternoon<br /><small>12 PM – 4
-                        PM</small></span>
-                  </label>
-                  <label class="time-slot">
+                  <label class="time-slot" id="cpEveningSlot">
                     <input type="radio" name="time" value="evening" />
-                    <span><span class="material-icons">nights_stay</span>Evening<br /><small>4 PM – 8 PM</small></span>
+                    <span><span class="material-icons">nights_stay</span>Evening<br /><small>5:00 PM – 9:00 PM</small></span>
                   </label>
                 </div>
+                <small id="cpSundayNote" style="display:none;margin-top:6px;color:var(--muted);font-size:0.78rem;">Sunday appointments are available only from 9:00 AM to 1:00 PM</small>
+                <small id="cpWeekdayNote" style="display:block;margin-top:6px;color:var(--muted);font-size:0.78rem;">Sun: 9:00 AM – 1:00 PM (By appointment only)</small>
               </div>
 
               <!-- Service (matches book.html) -->
@@ -687,7 +684,7 @@
           <div class="faq-strip-item reveal">
             <div class="faq-strip-icon"><span class="material-icons">access_time</span></div>
             <h4 class="faq-strip-q">How quickly will Smile Craft reply to my enquiry?</h4>
-            <p class="faq-strip-a">WhatsApp messages are answered within 30 minutes during clinic hours (8 AM – 8 PM).
+            <p class="faq-strip-a">WhatsApp messages are answered within 30 minutes during clinic hours (9 AM – 9 PM).
               Emails are responded to within 2 business hours. For the fastest response, use WhatsApp.</p>
           </div>
           <div class="faq-strip-item reveal reveal-d1">

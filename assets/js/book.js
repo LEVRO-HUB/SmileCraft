@@ -67,9 +67,12 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
   els.forEach((el) => io.observe(el));
 })();
 
-/* ── 4. DATE FIELD — min = today, no Sunday restriction ── */
+/* ── 4. DATE FIELD — min = today, Sunday evening slot logic ── */
 (function () {
-  const dateInput = document.getElementById('bkDate');
+  const dateInput    = document.getElementById('bkDate');
+  const eveningSlot  = document.getElementById('bkEveningSlot');
+  const sundayNote   = document.getElementById('bkSundayNote');
+  const weekdayNote  = document.getElementById('bkWeekdayNote');
   if (!dateInput) return;
 
   const pad   = (n) => String(n).padStart(2, '0');
@@ -85,13 +88,72 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycgnGu6yry59NW
     try { this.showPicker(); } catch (e) { this.focus(); }
   });
 
-  // Simple valid-date check on change — no day-of-week restriction
+  // Check if selected date is a Sunday and update evening slot accordingly
+  function updateTimeSlotsForDate() {
+    if (!dateInput.value) {
+      // No date selected — show default state (both slots enabled)
+      enableEveningSlot();
+      return;
+    }
+
+    // Parse the date — add T00:00 to avoid timezone offset issues
+    const selectedDate = new Date(dateInput.value + 'T00:00:00');
+    const isSunday = selectedDate.getDay() === 0;
+
+    if (isSunday) {
+      disableEveningSlot();
+    } else {
+      enableEveningSlot();
+    }
+  }
+
+  function disableEveningSlot() {
+    if (!eveningSlot) return;
+    const eveningRadio = eveningSlot.querySelector('input[type="radio"]');
+
+    // If evening was selected, clear it
+    if (eveningRadio && eveningRadio.checked) {
+      eveningRadio.checked = false;
+    }
+
+    // Disable the radio input
+    if (eveningRadio) eveningRadio.disabled = true;
+
+    // Visual disabled state
+    eveningSlot.style.opacity = '0.4';
+    eveningSlot.style.pointerEvents = 'none';
+    eveningSlot.style.cursor = 'not-allowed';
+
+    // Show/hide notes
+    if (sundayNote) sundayNote.style.display = 'block';
+    if (weekdayNote) weekdayNote.style.display = 'none';
+  }
+
+  function enableEveningSlot() {
+    if (!eveningSlot) return;
+    const eveningRadio = eveningSlot.querySelector('input[type="radio"]');
+
+    // Re-enable the radio input
+    if (eveningRadio) eveningRadio.disabled = false;
+
+    // Remove visual disabled state
+    eveningSlot.style.opacity = '';
+    eveningSlot.style.pointerEvents = '';
+    eveningSlot.style.cursor = '';
+
+    // Show/hide notes
+    if (sundayNote) sundayNote.style.display = 'none';
+    if (weekdayNote) weekdayNote.style.display = 'block';
+  }
+
+  // Date change handler — validate + update slots
   dateInput.addEventListener('change', () => {
     if (dateInput.value) {
       clearFieldError('err-date');
       dateInput.classList.remove('input-error');
       dateInput.classList.add('input-success');
     }
+    updateTimeSlotsForDate();
   });
 })();
 
